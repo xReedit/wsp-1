@@ -1,0 +1,14 @@
+node_modules
+_sessions
+.wwebjs_auth
+base-baileys-json
+base-baileys-mysql
+base-wppconnect-json
+base-wweb-json
+aaa_sessions
+demo01_sessions
+demo02_sessions
+tokens
+tmp
+
+config.js
