@@ -10,6 +10,8 @@ import { capitalize } from "../services/utiles"
 //@ts-ignore
 // import * as soundex from 'soundex-code'
 
+
+
 const EVENTO = 'chat-bot'
 
 // quita al numero de telefono el @c.us y pais
@@ -24,6 +26,7 @@ export const getClienteByCelular = async (num_telefono: string, data_cliente: Cl
     num_telefono = getNumeroCelular(num_telefono)    
 
     const rpt =  await getData(EVENTO, `cliente/${num_telefono}`)    
+    console.log('¿rpt', rpt);
     const isData = rpt.length > 0 ? true : false    
     if (isData) {
         const _data = rpt[0]

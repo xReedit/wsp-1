@@ -1,12 +1,15 @@
 // import { config } from '../config';
 // import fetch from 'node-fetch';
+// import fetch from 'node-fetch'; 
+import axios from 'axios';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
 const PUBLIC_API_KEY = process.env.URL_API_RESTOBAR
 
 // export function get apirest
-export const getData = async (controller: string, event: string, payload: any = null) => {
+export const getData = async (controller: string, event: string, payload: any = null): Promise<any>  => {
     const url = `${PUBLIC_API_KEY}/${controller}/${event}`    
 
     // const requestOptions: RequestInit = {
@@ -20,25 +23,53 @@ export const getData = async (controller: string, event: string, payload: any = 
     //     requestOptions.body = JSON.stringify(payload);
     // }
 
-    // const response = await fetch(url, requestOptions);
+    // try {
+    //     const response = await fetch(url, {
+    //         method: 'GET',
+    //         headers: { 'Content-Type': 'application/json' }
+    //     });
+    //     const jsonData = await response.json();
+    //     return jsonData;
+    // } catch (error) {
+    //     // Manejo de errores
+    //     console.error(error);
+    //     throw new Error('Error al obtener los datos');
+    // }
 
-    // console.log('response', response);
-
-    let response;
-    if (payload) {
-        response = await fetch(url, {
-            method: 'GET',
-            headers: {},
-            body: JSON.stringify(payload)
-        })
-    } else {
-        response = await fetch(url, {
-            method: 'GET',
-            headers: {}
-        })
+    // console.log('controller', controller);
+    // console.log('event', event);
+    console.log('url', url);
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        // console.error(error);
+        throw new Error('Error al obtener los datos');
     }
 
-    return response.json()
+    // const response = await fetch(url, {
+    //         method: 'GET',
+    //         headers: { 'Content-Type': 'application/json' }
+    //     })
+
+    // console.log('response', response);
+    // console.log('response', response);
+
+    // let response;
+    // if (payload) {
+    //     response = await fetch(url, {
+    //         method: 'GET',
+    //         headers: {},
+    //         body: JSON.stringify(payload)
+    //     })
+    // } else {
+    //     response = await fetch(url, {
+    //         method: 'GET',
+    //         headers: {}
+    //     })
+    // }
+
+    // return response.json()
 }
 
 // export function post apirest
@@ -116,13 +147,21 @@ export const postDataPedidoBot = async (controller: string, event: string, paylo
         // 'Authorization': `Bearer ${token}`
     }
 
-    try {        
-        await fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(payload)
-        })
+    // try {        
+    //     await fetch(url, {
+    //         method: 'POST',
+    //         headers,
+    //         body: JSON.stringify(payload)
+    //     })
+    // } catch (error) {
+    //     console.log('postDataPedidoBot', error);
+    // }
+
+    try {
+        const response = await axios.post(url, payload);
+        return response.data;
     } catch (error) {
-        console.log('postDataPedidoBot', error);
+        console.error(error);
+        throw new Error('Error al enviar los datos');
     }
 }

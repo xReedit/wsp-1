@@ -1,0 +1,24 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0D541D19A3D9EDF7D4D',
+    participant: undefined
+  },
+  messageTimestamp: 1688364196,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'hola',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '51934746830'
+}
