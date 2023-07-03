@@ -1,7 +1,9 @@
 import e from 'express';
-import { config } from '../config';
 import  BotApp  from './piter';
 import * as fs from 'fs'
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 const sessions: { [name: string]: BotApp } = {};
 
@@ -23,7 +25,7 @@ const socketsConnect = (io: any) => {
             const _nameSession = playload.nameSession
             const nameSession: string = _nameSession;
             let  infoSede = playload.infoSede
-            console.log('nombre session', _nameSession); 
+            // console.log('nombre session', _nameSession); 
             
             let session: BotApp;
             
@@ -73,8 +75,7 @@ const socketsConnect = (io: any) => {
 
             });
 
-            session.adapterProviderEvent.on('ready', (data) => {
-                console.log('session', session);                
+            session.adapterProviderEvent.on('ready', (data) => {                                
                 console.log('Session Iniciada ', data)
                 socket.emit('session_init', true)
             });            

@@ -1,6 +1,9 @@
-import { config } from '../config';
+// import { config } from '../config';
 // import fetch from 'node-fetch';
-const PUBLIC_API_KEY = config.URL_API_RESTOBAR
+import dotenv from 'dotenv';
+dotenv.config();
+
+const PUBLIC_API_KEY = process.env.URL_API_RESTOBAR
 
 // export function get apirest
 export const getData = async (controller: string, event: string, payload: any = null) => {
@@ -106,7 +109,7 @@ export const putData = async (controller: string, event: string, payload: any = 
 
 // enviar pedido al api de pedidos
 export const postDataPedidoBot = async (controller: string, event: string, payload: any) => {
-    const url = `${config.PUBLIC_URL_API_PEDIDO}/${controller}/${event}`
+    const url = `${process.env.PUBLIC_URL_API_PEDIDO}/${controller}/${event}`
     // const token = localStorage.getItem('token')
     const headers = {
         'Content-Type': 'application/json',

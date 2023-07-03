@@ -1,4 +1,6 @@
-import { config } from "../config";
+// import { config } from "../config";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export class ChatGPT {    
     private conversationLog: string[];
@@ -9,7 +11,7 @@ export class ChatGPT {
 
     constructor(rolResponde: string = 'mesero', rolEnvia: string = 'usuario') {        
         this.conversationLog = [];
-        this.apiKey = config.OPENAI_API_KEY;
+        this.apiKey = process.env.OPENAI_API_KEY;
         this.apiUrl = 'https://api.openai.com/v1/chat/completions';
         this.rolResponde = rolResponde;
         this.rolEnvia = rolEnvia;

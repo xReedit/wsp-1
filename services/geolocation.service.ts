@@ -1,11 +1,15 @@
 
 // import { createClient } from '@google/maps';
 // import { Client } from '@googlemaps/google-maps-services-js';
+// import { config } from "../config";
 
-import { config } from "../config";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export class GeolocationServices {
-    private apiKey = config.API_KEY_GOOGLE;
+    
+    // private apiKey = config.API_KEY_GOOGLE;
+    private apiKey = process.env.API_KEY_GOOGLE;
     // private googleMapsClient
 
     constructor() {       

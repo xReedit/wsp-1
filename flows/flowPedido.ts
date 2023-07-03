@@ -9,7 +9,10 @@ import { buscarCoincidencias, consularLoQueHay, consultarPlato, insertarPlatosEn
 // import { flowConfirmaPedido } from "./flowConfirmaPedido";
 import { ClassCliente } from "../clases/cliente";
 import { ClassInformacionPedido } from "../clases/info.pedido.class";
-import { config } from "../config";
+// import { config } from "../config";
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 // activar 1 hacer pedido
@@ -17,6 +20,7 @@ import { config } from "../config";
 export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
 
     // indica si estamos atentos al pedido del cliente
+    let url_img_carta = process.env.URL_IMG_CARTA
     let showTomarPedido = false
     let mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
     let _listCartasActivas = []
@@ -284,7 +288,7 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
         _listCartasActivas.forEach(async (carta) => {
             await sock.sendMessage(jid, {
                 caption: capitalize(carta.descripcion),
-                image: { url: `${config.URL_IMG_CARTA}${carta.url_carta}` }
+                image: { url: `${url_img_carta}${carta.url_carta}` }
             })
         })
     }

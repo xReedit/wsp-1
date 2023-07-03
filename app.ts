@@ -3,12 +3,15 @@ import { createServer } from "http";
 import { Server } from 'socket.io';
 import cors from 'cors'; 
 import socketsConnect  from './controllers/socket';
-import { config } from './config';
+// import { config } from './config';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 // import 'dotenv/config'
 
-const PORT = config.PORT
-const PORT_SOCKET = config.PORT_SOCKET
+const PORT = process.env.PORT
+const PORT_SOCKET_CHAT = parseInt(process.env.PORT_SOCKET)
 
 const app = express();
 app.use(cors()); 
@@ -31,7 +34,7 @@ const io = new Server(httpServer, {
     pingTimeout: 30000,
     cookie: false,
     allowEIO3: true
-}).listen(PORT_SOCKET)
+}).listen(PORT_SOCKET_CHAT)
 
 socketsConnect(io)
 // io.on('connection', (socket: any) => {
