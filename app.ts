@@ -11,7 +11,7 @@ dotenv.config();
 // import 'dotenv/config'
 
 const PORT = process.env.PORT
-const PORT_SOCKET_CHAT = parseInt(process.env.PORT_SOCKET)
+const PORT_SOCKET_CHAT = process.env.PORT_SOCKET
 
 const app = express();
 app.use(cors()); 
@@ -34,7 +34,7 @@ const io = new Server(httpServer, {
     pingTimeout: 30000,
     cookie: false,
     allowEIO3: true
-}).listen(PORT_SOCKET_CHAT)
+}).listen(5624)
 
 socketsConnect(io)
 // io.on('connection', (socket: any) => {
