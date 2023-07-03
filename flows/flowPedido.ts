@@ -40,6 +40,7 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
     let intentosEntederPedido = 0
 
     let infoSede = infoPedido.getSede()
+    // let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
     let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
     // let chatGpt = new ChatGPT('mesero', 'cliente')    
 
@@ -50,7 +51,11 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
     .addAction(
         async () => {
             // reset de variables
-            chatGpt.clearConversationLog()
+            try {
+                chatGpt.clearConversationLog()                
+            } catch (error) {
+            }
+                
         }
     )  
     .addAnswer([
@@ -188,13 +193,13 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             
             // enviamos la respuesta del usuario
             let modelResponse = await chatGpt.sendMessage(userResponse)        
-            console.log('modelResponse', modelResponse);            
+            // console.log('modelResponse', modelResponse);            
 
             // const isConsultarPlato = modelResponse.includes('consular_plato=')
             
             // si interpreta que es un pedido
             const isPedido = modelResponse.includes('pedido=')
-            console.log('isPedido', isPedido);
+            // console.log('isPedido', isPedido);
             // const isConfirmar = userResponse.includes('confirmar')
             let rptReturn = modelResponse;
 
@@ -206,9 +211,9 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
 
             if (isPedido) {
                 const _modelResponse = modelResponse.replace('pedido=', '').replace('¿Desea algo más?', '')    
-                console.log('add list', _modelResponse);                
+                // console.log('add list', _modelResponse);                
                 listPedidoCliente = _modelResponse.split(',')
-                console.log('listPedidoCliente', listPedidoCliente);
+                // console.log('listPedidoCliente', listPedidoCliente);
                 
                 const _rptDisponibilidad = await getDisponibilidad(listPedidoCliente)
 
@@ -235,13 +240,13 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             ]
 
             const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
-            console.log('opSelected', opSelected);
+            // console.log('opSelected', opSelected);
             if (opSelected === undefined) {
                 return await fallBack('No entendí su respuesta, repita por favor.');
             }
 
             
-            console.log('modelResponse', modelResponse);
+            // console.log('modelResponse', modelResponse);
             switch (opSelected.op) {
                 case 1:
                     // rptReturn = 'Un momento...'
@@ -338,9 +343,9 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
 
         [platosEcontrados, platosNoEcontrados, platosSinStock, platosRecomendados] = buscarCoincidencias(itemsCarta, listPedidoCliente)
 
-        console.log('encontrados', platosEcontrados);
-        console.log('noEncontrados', platosNoEcontrados);
-        console.log('cantidadesMayores', platosSinStock);  
+        // console.log('encontrados', platosEcontrados);
+        // console.log('noEncontrados', platosNoEcontrados);
+        // console.log('cantidadesMayores', platosSinStock);  
 
         seccionesPlatosElegidos = insertarPlatosEnSeccion(cartaEstablecimiento.carta, platosEcontrados);        
         infoPedido.setPedidoCliente(seccionesPlatosElegidos);

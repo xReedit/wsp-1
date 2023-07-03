@@ -1,7 +1,7 @@
 // import { config } from '../config';
 // import fetch from 'node-fetch';
 // import fetch from 'node-fetch'; 
-import axios from 'axios';
+// import axios from 'axios';
 
 // import * as dotenv from "dotenv";
 // dotenv.config();
@@ -41,13 +41,13 @@ export const getData = async (controller: string, event: string, payload: any = 
     // console.log('controller', controller);
     // console.log('event', event);
     console.log('url', url);
-    try {
-        const response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        // console.error(error);
-        throw new Error('Error al obtener los datos');
-    }
+    // try {
+    //     const response = await axios.get(url);
+    //     return response.data;
+    // } catch (error) {
+    //     // console.error(error);
+    //     throw new Error('Error al obtener los datos');
+    // }
 
     // const response = await fetch(url, {
     //         method: 'GET',
@@ -57,21 +57,21 @@ export const getData = async (controller: string, event: string, payload: any = 
     // console.log('response', response);
     // console.log('response', response);
 
-    // let response;
-    // if (payload) {
-    //     response = await fetch(url, {
-    //         method: 'GET',
-    //         headers: {},
-    //         body: JSON.stringify(payload)
-    //     })
-    // } else {
-    //     response = await fetch(url, {
-    //         method: 'GET',
-    //         headers: {}
-    //     })
-    // }
+    let response;
+    if (payload) {
+        response = await fetch(url, {
+            method: 'GET',
+            headers: {},
+            body: JSON.stringify(payload)
+        })
+    } else {
+        response = await fetch(url, {
+            method: 'GET',
+            headers: {}
+        })
+    }
 
-    // return response.json()
+    return response.json()
 }
 
 // export function post apirest
@@ -149,21 +149,21 @@ export const postDataPedidoBot = async (controller: string, event: string, paylo
         // 'Authorization': `Bearer ${token}`
     }
 
-    // try {        
-    //     await fetch(url, {
-    //         method: 'POST',
-    //         headers,
-    //         body: JSON.stringify(payload)
-    //     })
-    // } catch (error) {
-    //     console.log('postDataPedidoBot', error);
-    // }
-
-    try {
-        const response = await axios.post(url, payload);
-        return response.data;
+    try {        
+        await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+        })
     } catch (error) {
-        console.error(error);
-        throw new Error('Error al enviar los datos');
+        console.log('postDataPedidoBot', error);
     }
+
+    // try {
+    //     const response = await axios.post(url, payload);
+    //     return response.data;
+    // } catch (error) {
+    //     console.error(error);
+    //     throw new Error('Error al enviar los datos');
+    // }
 }

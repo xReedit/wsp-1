@@ -80,8 +80,7 @@ const socketsConnect = (io: any) => {
 
             });
 
-            session.adapterProviderEvent.on('ready', (data) => {                                
-                console.log('Session Iniciada ', data)
+            session.adapterProviderEvent.on('ready', (data) => {
                 socket.emit('session_init', true)
             });            
 

@@ -23,7 +23,7 @@ export const flowPrincipal = (infoPedido: ClassInformacionPedido) => {
             const _num_telefono = ctx.from                                        
             // const _num_telefono = ctx.from                                        
             infoCliente = await getClienteByCelular(_num_telefono, infoCliente)                        
-            console.log('infoCliente', infoCliente);
+            // console.log('infoCliente', infoCliente);
             infoPedido.setCliente(infoCliente)
 
             // si se encuentra registrado saludamos primero

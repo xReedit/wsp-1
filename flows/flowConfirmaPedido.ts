@@ -84,8 +84,12 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
     .addAction(
         async () => {
             // reset de variables
-            chatGptConfirmaPedido.clearConversationLog()
-            datosRecopiladosDelCliente = {}
+            try {                
+                datosRecopiladosDelCliente = {}
+                chatGptConfirmaPedido.clearConversationLog()
+            } catch (error) {
+                
+            }
         }
     )
     .addAnswer([
@@ -138,9 +142,9 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                     if ( isClienteEligeListDireccion ) {
                         // obtenemos la direccion que eligio el cliente segun el idshow de la lista _listDireccionesShow
                         const _idShowDireccionElegido = userResponse
-                        console.log('_listDirecciones', _listDirecciones);
+                        // console.log('_listDirecciones', _listDirecciones);
                         const _direccionElegida = _listDirecciones.find((item: any) => item.idshow === parseInt(_idShowDireccionElegido))   
-                        console.log('_direccionElegida', _direccionElegida);
+                        // console.log('_direccionElegida', _direccionElegida);
                         if (_direccionElegida) {
                             await setearDireccionSeleccionada(_direccionElegida, true)
                             return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic)
@@ -179,7 +183,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
                 
                 let modelResponse = await chatGptConfirmaPedido.sendMessage(userResponse)
-                console.log('modelResponse', modelResponse);
+                // console.log('modelResponse', modelResponse);
 
                 
 
@@ -189,7 +193,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                     return await fallBack(modelResponse);
                 } else {
                     datosRecopiladosDelCliente = modelResponse.split('respuesta=')[1]
-                    console.log('respuesta completa = ', datosRecopiladosDelCliente);
+                    // console.log('respuesta completa = ', datosRecopiladosDelCliente);
                     datosRecopiladosDelCliente = JSON.parse(datosRecopiladosDelCliente)
                     await setearDireccionSeleccionada(datosRecopiladosDelCliente);
                     // infoCliente.setDireccionSelected(datosRecopiladosDelCliente.direccion)
@@ -213,9 +217,9 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                     if (isCanalDelivery) {
                         
                         const _confgDelivery = infoPedido.getConfigDelivery()                        
-                        console.log('datosRecopiladosDelCliente.direccion --1', datosRecopiladosDelCliente);
+                        // console.log('datosRecopiladosDelCliente.direccion --1', datosRecopiladosDelCliente);
                         let direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(datosRecopiladosDelCliente.direccion, _confgDelivery.ciudades)
-                        console.log('direccionClienteSeletedCoordenadas', direccionClienteSeletedCoordenadas);
+                        // console.log('direccionClienteSeletedCoordenadas', direccionClienteSeletedCoordenadas);
 
                         if (!direccionClienteSeletedCoordenadas ) {
                             const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida.'
@@ -231,7 +235,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                         const coordenadas_origen = `${infoSede.latitude}, ${infoSede.longitude}`                        
                         const coordenadas_destino = `${direccionClienteSeletedCoordenadas.latitude}, ${direccionClienteSeletedCoordenadas.longitude}`
                         subtotalCostoEntrega = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)                        
-                        console.log('subtotalCostoEntrega ============= ', subtotalCostoEntrega);
+                        // console.log('subtotalCostoEntrega ============= ', subtotalCostoEntrega);
                         if (subtotalCostoEntrega.success ) {
                             infoPedido.setSubtotalCostoEntrega(subtotalCostoEntrega)
                         } else {
@@ -260,7 +264,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
             datosRecopiladosDelCliente.telefono = infoCliente.getCelular()
             datosRecopiladosDelCliente.nombre = infoCliente.getNombrePila()            
 
-            console.log('datosRecopiladosDelCliente', datosRecopiladosDelCliente);
+            // console.log('datosRecopiladosDelCliente', datosRecopiladosDelCliente);
 
             canalConsumoSeleted.secciones = infoPedido.getPedidoCliente();
             pedidoEnviar.setTipoConsumo(canalConsumoSeleted)            
@@ -284,7 +288,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                 chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
                 const _rptChatGpt = await chatGptConfirmaPedido.sendPrompt(_prompt)
                 chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
-                console.log('_rptChatGpt', _rptChatGpt);
+                // console.log('_rptChatGpt', _rptChatGpt);
 
                 isRecopilandoDatos = true;
 
@@ -295,7 +299,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                         // si hay varias direcciones debe seleccionar una, y si solo hay una debe confirmarla
                         
                         _listDirecciones = infoCliente.getDirecciones()
-                        console.log('_listDirecciones', _listDirecciones);
+                        // console.log('_listDirecciones', _listDirecciones);
                         if (_listDirecciones.length > 1) {
                             // si hay varias direcciones debe seleccionar una
                             _listDirecciones = _listDirecciones.map((item: any, index) => {
@@ -380,7 +384,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
             const _idTipoPago = ctx.body.toLowerCase().trim()
             tipoPagoSeleted = listTipoPago.find((item: any) => item.idshow === parseInt(_idTipoPago))
-            console.log('_tipoPago', tipoPagoSeleted);
+            // console.log('_tipoPago', tipoPagoSeleted);
 
             if (!tipoPagoSeleted) {
                 return fallBack('Escriba un numero valido, para seleccionar el tipo de pago')
@@ -508,7 +512,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         let msjReturn=''
 
         // verificamos si direccionOCoordenadasCliente ya viene con las coordenadas
-        console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
+        // console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
         if (direccionOCoordenadasCliente.latitude) {
             direccionClienteSeletedCoordenadas = {
                 latitude: direccionOCoordenadasCliente.latitude,
@@ -516,12 +520,12 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
             }
         } else {
             const geolocationServices = new GeolocationServices()
-            console.log('direccionOCoordenadasCliente --2', direccionOCoordenadasCliente);
+            // console.log('direccionOCoordenadasCliente --2', direccionOCoordenadasCliente);
             direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(direccionOCoordenadasCliente.direccion, _confgDelivery.ciudades)
         }
 
 
-        console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
+        // console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
         if (!direccionClienteSeletedCoordenadas) {
             const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida.'
             chatGptConfirmaPedido.setRowConversationLog(`asisente=${_rptMsj}`)
@@ -551,25 +555,25 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
     async function getDireccionFromCoordenadas(coordenadas: string) {
         // const geolocationServices = new GeolocationServices()
-        console.log('coordenadas -- 3', coordenadas);
+        // console.log('coordenadas -- 3', coordenadas);
         const direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(coordenadas, infoPedido.getConfigDelivery().ciudades)
         return direccionClienteSeletedCoordenadas
     }
 
     // se espera {direccion, referencia}
     async function setearDireccionSeleccionada(datosRecopilados:any, isDireccionRegistrada = false){
-        console.log('direccionElegida -- ', datosRecopilados);
+        // console.log('direccionElegida -- ', datosRecopilados);
         let direccionSelected = isDireccionRegistrada ? datosRecopilados.direccion : datosRecopilados
-        // const direccionElegida = direccionSelected.direccion
         let referenciaDireccionSelected = datosRecopilados.referencia
-        console.log('direccionSelected -- ', direccionSelected);
+        // const direccionElegida = direccionSelected.direccion
+        // console.log('direccionSelected -- ', direccionSelected);
 
         if (isDireccionRegistrada) {
             // buscamos la direccion seleccionada en la lista de direcciones
             const listDirecciones: any = infoCliente.getDirecciones();            
             const direccionSelectedBuscar = direccionSelected.split(',')[0].toLowerCase().trim()
             const _direccion = listDirecciones.find(item  => item.direccion.toLowerCase().includes(direccionSelectedBuscar))   
-            console.log('_direccion', _direccion);
+            // console.log('_direccion', _direccion);
             if ( _direccion ) {
                 infoCliente.setIdClientePwaDireccion(_direccion.idcliente_pwa_direccion)
                 referenciaDireccionSelected = _direccion.referencia
@@ -595,7 +599,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
     }
 
     async function verificarDatosFaltantesDelCliente(fallBack, flowDynamic) {
-        console.log('datosRecopiladosDelCliente - ', datosRecopiladosDelCliente);
+        // console.log('datosRecopiladosDelCliente - ', datosRecopiladosDelCliente);
         datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)
         if (datosFaltantes.length > 0) {
             chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
