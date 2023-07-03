@@ -10,8 +10,8 @@ dotenv.config();
 
 // import 'dotenv/config'
 
-const PORT_API = process.env.PORT_API
-const PORT_SOCKET_CHAT = parseInt(process.env.PORT_SOCKET)
+const port_api = process.env.PORT_API
+const port_socket_chat = parseInt(process.env.PORT_SOCKET)
 
 const app = express();
 app.use(cors()); 
@@ -34,7 +34,7 @@ const io = new Server(httpServer, {
     pingTimeout: 30000,
     cookie: false,
     allowEIO3: true
-}).listen(PORT_SOCKET_CHAT)
+}).listen(port_socket_chat)
 
 socketsConnect(io)
 // io.on('connection', (socket: any) => {
@@ -48,9 +48,9 @@ socketsConnect(io)
 
 
 
-httpServer.listen(PORT_API, () => {    
-    console.log('Server is running.. port ->' + PORT_API);
-    console.log('Server socket is running.. port ->' + PORT_SOCKET_CHAT);
+httpServer.listen(port_api, () => {    
+    console.log('Server is running.. port ->' + port_api);
+    console.log('Server socket is running.. port ->' + port_socket_chat);
 });
 
 exports = app;
