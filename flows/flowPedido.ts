@@ -14,13 +14,15 @@ import { ClassInformacionPedido } from "../clases/info.pedido.class";
 // import dotenv from 'dotenv';
 // dotenv.config();
 
+import endpoint from '../endpoints.config';
+
 
 // activar 1 hacer pedido
 // activar 2 mostrar carta
 export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
 
     // indica si estamos atentos al pedido del cliente
-    let url_img_carta = process.env.URL_IMG_CARTA
+    let url_img_carta = endpoint.url_img_carta
     let showTomarPedido = false
     let mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
     let _listCartasActivas = []

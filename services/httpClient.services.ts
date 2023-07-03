@@ -6,7 +6,9 @@ import axios from 'axios';
 // import * as dotenv from "dotenv";
 // dotenv.config();
 
-const PUBLIC_API_KEY = process.env.URL_API_RESTOBAR
+import endpoint from '../endpoints.config';
+
+const PUBLIC_API_KEY = endpoint.url_api_restobar // process.env.URL_API_RESTOBAR
 
 // export function get apirest
 export const getData = async (controller: string, event: string, payload: any = null): Promise<any>  => {
@@ -140,7 +142,7 @@ export const putData = async (controller: string, event: string, payload: any = 
 
 // enviar pedido al api de pedidos
 export const postDataPedidoBot = async (controller: string, event: string, payload: any) => {
-    const url = `${process.env.PUBLIC_URL_API_PEDIDO}/${controller}/${event}`
+    const url = `${endpoint.url_api_pedido}/${controller}/${event}`
     // const token = localStorage.getItem('token')
     const headers = {
         'Content-Type': 'application/json',

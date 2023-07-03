@@ -5,10 +5,13 @@ import cors from 'cors';
 import socketsConnect  from './controllers/socket';
 // import { config } from './config';
 
-import 'dotenv/config'
+// import 'dotenv/config'
 // dotenv.config();
 
 // import 'dotenv/config'
+// import { config } from "dotenv"
+import * as dotenv from 'dotenv'
+dotenv.config();
 
 const PORT = process.env.PORT
 const PORT_SOCKET_CHAT = process.env.PORT_SOCKET

@@ -5,11 +5,12 @@
 
 // import dotenv from 'dotenv';
 // dotenv.config();
+import endpoint from '../endpoints.config';
 
 export class GeolocationServices {
     
     // private apiKey = config.API_KEY_GOOGLE;
-    private apiKey = process.env.API_KEY_GOOGLE;
+    private apiKey = endpoint.api_key_google
     // private googleMapsClient
 
     constructor() {       
