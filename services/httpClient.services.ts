@@ -1,19 +1,25 @@
 import { config } from '../config';
+// import fetch from 'node-fetch';
 const PUBLIC_API_KEY = config.URL_API_RESTOBAR
 
 // export function get apirest
 export const getData = async (controller: string, event: string, payload: any = null) => {
     const url = `${PUBLIC_API_KEY}/${controller}/${event}`    
 
-    // const token = localStorage.getItem('token') || ''
-    // const headers = {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${token}`
+    // const requestOptions: RequestInit = {
+    //     method: 'GET',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
+
+    // if (payload) {
+    //     requestOptions.body = JSON.stringify(payload);
     // }
 
-    // console.log('object', headers); 
+    // const response = await fetch(url, requestOptions);
 
-    
+    // console.log('response', response);
 
     let response;
     if (payload) {
@@ -107,9 +113,13 @@ export const postDataPedidoBot = async (controller: string, event: string, paylo
         // 'Authorization': `Bearer ${token}`
     }
 
-    return await fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(payload)
-    })
+    try {        
+        await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+        })
+    } catch (error) {
+        console.log('postDataPedidoBot', error);
+    }
 }

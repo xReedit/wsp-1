@@ -1,15 +1,15 @@
 [
   {
-    "ref": "e05b8173-2c47-4dd6-88fc-dd98d9a9eee1",
-    "keyword": "715ca38ec28b8dabb30e75e511c57a3a",
-    "answer": "hola",
+    "ref": "2ed4687d-f65f-49f6-a62d-3718eb989cc2",
+    "keyword": "8e18a7e92a2a646d2d79e385a3a290d6",
+    "answer": "Hola",
     "options": {},
-    "from": "51934746830",
-    "refSerialize": "79e7fc16f7fb85373fd25a99390f44c0"
+    "from": "51922479325",
+    "refSerialize": "c22e4066d61d81721def9b25d8a397e8"
   },
   {
-    "ref": "ans_b16c8d5c-3408-4569-a38c-bf8bef6d022e",
-    "keyword": "key_d99a6132-328b-4e88-a5e8-dab87f022c70",
+    "ref": "ans_4b013f58-3a03-4f9f-8b93-6df0b24a4de9",
+    "keyword": "key_39bdf179-079e-44e6-9162-ade506224ef4",
     "answer": "🤖 Hola, soy Piter su asistente virtual.",
     "options": {
       "media": null,
@@ -21,23 +21,23 @@
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "ba7241a661bc457a44b725d077d59e65",
-    "from": "51934746830"
+    "refSerialize": "54c52621a0d951393e0af1f76e43dc16",
+    "from": "51922479325"
   },
   {
-    "ref": "2783b857-cb57-44c9-8f01-2e0e6469ea88",
-    "answer": "👋 Hola *Carlos*, será un placer ayudarte hoy",
+    "ref": "310e8279-abd4-401b-8e97-ecd8d2142b26",
+    "answer": "👋 Hola *Cristina*, será un placer ayudarte hoy",
     "options": {
       "media": null,
       "buttons": [],
       "capture": false
     },
-    "from": "51934746830",
-    "refSerialize": "9b537f3b8cb854f8c51475603e5d3c2c"
+    "from": "51922479325",
+    "refSerialize": "30c19cc1014d93743010c3da0c0d4d68"
   },
   {
-    "ref": "ans_3e17d94a-7e37-40af-ac26-51bb12fb63a1",
-    "keyword": "ans_f4a924b7-f547-4933-b4b7-6be721f5ebc0",
+    "ref": "ans_4e2bab59-f300-41f6-8d21-0638635a36de",
+    "keyword": "ans_4a30623b-ab21-468b-b72b-78cab2123397",
     "answer": "👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n*3*  📃 para reenviarte un comprobante",
     "options": {
       "media": null,
@@ -47,21 +47,21 @@
       "delay": 0,
       "nested": [
         {
-          "ref": "key_133b657b-1d4e-423d-ab0f-e5f7cb7a305c",
+          "ref": "key_52a5380a-8be3-4880-a7f6-b6ca90322982",
           "keyword": [
             "1",
             "2",
-            "_event_voice_note__f0d9e464-830d-40d7-9fa7-0c106ef33e76"
+            "_event_voice_note__77ed11bc-b9e3-4588-bbe2-e88a447fc1a0"
           ],
           "options": {
             "sensitive": false,
             "regex": false
           },
-          "refSerialize": "b1c9d526079a611600b45c1a44ef540e"
+          "refSerialize": "0443c5057c59ddb1eb6ae01f3bb4dc4d"
         },
         {
-          "ref": "ans_6a300d3c-72f5-4b25-84d6-031bb58632fd",
-          "keyword": "key_133b657b-1d4e-423d-ab0f-e5f7cb7a305c",
+          "ref": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+          "keyword": "key_52a5380a-8be3-4880-a7f6-b6ca90322982",
           "answer": "Ya sabe que pedir? ó desea que le envie la carta?, escribe:\n*1* 🗒️ para tomarte el pedido\n*2* 🎴 para enviarte la carta",
           "options": {
             "media": null,
@@ -73,11 +73,11 @@
             "keyword": {},
             "callback": true
           },
-          "refSerialize": "055f454558e901c17f212513c083fac3"
+          "refSerialize": "6db1672fa071bed10c9aabdeaea20032"
         },
         {
-          "ref": "ans_8bfa8dd7-489f-4ed5-9c6c-fbe8f3b39020",
-          "keyword": "ans_6a300d3c-72f5-4b25-84d6-031bb58632fd",
+          "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+          "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
           "answer": "Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*",
           "options": {
             "media": null,
@@ -89,10 +89,10 @@
             "keyword": {},
             "callback": true
           },
-          "refSerialize": "e0b95c3405b35f4ce10450c2e811a063"
+          "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4"
         },
         {
-          "ref": "key_a4152768-b277-486d-959d-bdcb535a4495",
+          "ref": "key_9fbb84ac-e5cd-4b5d-9cde-81d0fd9a9553",
           "keyword": [
             "3",
             "comprobante",
@@ -105,8 +105,8 @@
           "refSerialize": "d2a37336590bf6711925d5649e5efd9f"
         },
         {
-          "ref": "ans_841b1070-1e3d-4f8d-9da1-367199b6e45f",
-          "keyword": "key_a4152768-b277-486d-959d-bdcb535a4495",
+          "ref": "ans_87024a4b-ca0f-422e-a8cb-fbfc114a95e4",
+          "keyword": "key_9fbb84ac-e5cd-4b5d-9cde-81d0fd9a9553",
           "answer": "📃 Para poder encontrar el comprobante:\nPor favor digame el *ruc* o *dni* del cliente -a quien fue emitido-",
           "options": {
             "media": null,
@@ -118,27 +118,249 @@
             "keyword": {},
             "callback": true
           },
-          "refSerialize": "ee7c4152c961292193f76801640a71b1"
+          "refSerialize": "2c31916cb122a1ede5a68e5fa24e5dda"
         }
       ],
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "201f3543b18b093d2225a19448d60c93",
-    "from": "51934746830"
+    "refSerialize": "373db47ece22fa42a68f4fcd4d57cb5e",
+    "from": "51922479325"
   },
   {
-    "ref": "89bc4262-ea20-45ea-a6c0-7837c77cd182",
-    "keyword": "201f3543b18b093d2225a19448d60c93",
+    "ref": "4f2d556a-901f-4439-b650-bfa93498bbee",
+    "keyword": "373db47ece22fa42a68f4fcd4d57cb5e",
+    "answer": "2",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "2294c3d08b53a6effa5df696a15b9d30"
+  },
+  {
+    "ref": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "keyword": "key_52a5380a-8be3-4880-a7f6-b6ca90322982",
+    "answer": "Ya sabe que pedir? ó desea que le envie la carta?, escribe:\n*1* 🗒️ para tomarte el pedido\n*2* 🎴 para enviarte la carta",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "6db1672fa071bed10c9aabdeaea20032",
+    "from": "51922479325"
+  },
+  {
+    "ref": "b74d800b-0ce7-4fa0-b88a-0ed3d64b6b9b",
+    "keyword": "6db1672fa071bed10c9aabdeaea20032",
+    "answer": "1",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
+  },
+  {
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
+  },
+  {
+    "ref": "996d0744-0b9c-463e-aef3-b24c4d981bda",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "Mándame la carta",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "af5794ac72c3572114b8afcdbacc4a93"
+  },
+  {
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "Ya le adjunte",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
+  },
+  {
+    "ref": "0a94c55b-3379-4b75-abc3-ce3f23c24566",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "1 arroz con leche, 1 ají de gallina",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "9b4c2b70e9c8de958d2703f698887156"
+  },
+  {
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "¿Desea algo más?",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
+  },
+  {
+    "ref": "a652493d-3cc9-49d1-8081-ddd1411be786",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "No",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "8e18a7e92a2a646d2d79e385a3a290d6"
+  },
+  {
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "Confirme, esto es lo que entendi:\n1 - arroz con leche\n 1 - ají de gallina\n\nEscriba *confirmar* para continuar.",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
+  },
+  {
+    "ref": "e9f05ea8-6e5a-4f80-8b53-5ed81254d891",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "Confirmar",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "4cfe2e35c2394d1a8697288e4d47979c"
+  },
+  {
+    "ref": "a8a1a03e-9aaf-467d-99f2-a8c9d84acb9a",
+    "answer": "Ok",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "c9bf2a58834582c83aed110b6b35d5f6"
+  },
+  {
+    "ref": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "keyword": "key_2693b92f-ceea-4942-ae78-86560b494188",
+    "answer": "Ahora, seleccione el canal, escriba:\n*1* Para Delivery 🛵\n*2* Para Recoger 👜\n*3* Para Reservar 🕜",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "bd7136ef64061f08b37c840229179120",
+    "from": "51922479325"
+  },
+  {
+    "ref": "b4191f9e-945d-44b6-9554-fe14eb5ebb09",
+    "keyword": "bd7136ef64061f08b37c840229179120",
+    "answer": "1",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
+  },
+  {
+    "ref": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "keyword": "key_2693b92f-ceea-4942-ae78-86560b494188",
+    "answer": "Tenemos registrado las siguientes direcciones:\n*1* av. canaan mz. a lt. 03\n*2* av. canaan mz. a lt. 03\n\nEscriba el numero de la direccion que desea seleccionar.",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "bd7136ef64061f08b37c840229179120",
+    "from": "51922479325"
+  },
+  {
+    "ref": "dbb4189c-4540-4a14-9720-8b9fa71bf036",
+    "keyword": "bd7136ef64061f08b37c840229179120",
+    "answer": "2",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "2294c3d08b53a6effa5df696a15b9d30"
+  },
+  {
+    "ref": "6e7f1654-0e30-4c85-b970-2e4956d95e7a",
+    "answer": "El costo total del pedido es: *S/.30.00*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "69ca8dd76081d920e300d6860c5e5e0a"
+  },
+  {
+    "ref": "ans_d5408b22-a5c5-458b-993f-3bc375c614de",
+    "keyword": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "answer": "Ahora seleccione como desea pagar, escriba:\n*1* Para Efectivo\n*2* Para Yape\n*3* Para Plin",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "from": "51922479325"
+  },
+  {
+    "ref": "930ae5bd-5454-4069-bd3a-488574a0c433",
+    "keyword": "cf78eef76c29fa5cc8be4dd97c1b36f1",
     "answer": "3",
     "options": {},
-    "from": "51934746830",
+    "from": "51922479325",
     "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
   },
   {
-    "ref": "ans_841b1070-1e3d-4f8d-9da1-367199b6e45f",
-    "keyword": "key_a4152768-b277-486d-959d-bdcb535a4495",
-    "answer": "📃 Para poder encontrar el comprobante:\nPor favor digame el *ruc* o *dni* del cliente -a quien fue emitido-",
+    "ref": "ans_d5408b22-a5c5-458b-993f-3bc375c614de",
+    "keyword": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "answer": "¿Desea cubiertos?",
     "options": {
       "media": null,
       "buttons": [],
@@ -149,21 +371,168 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "ee7c4152c961292193f76801640a71b1",
-    "from": "51934746830"
+    "refSerialize": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "from": "51922479325"
   },
   {
-    "ref": "4b54a60a-ed97-4520-a824-1d721c053bec",
-    "keyword": "ee7c4152c961292193f76801640a71b1",
-    "answer": "00000000",
+    "ref": "ee2942fb-ff27-420e-a897-575e3db4e155",
+    "keyword": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "answer": "No",
     "options": {},
-    "from": "51934746830",
-    "refSerialize": "96a064cf43a0d2e9c95a3533b2051779"
+    "from": "51922479325",
+    "refSerialize": "8e18a7e92a2a646d2d79e385a3a290d6"
   },
   {
-    "ref": "ans_841b1070-1e3d-4f8d-9da1-367199b6e45f",
-    "keyword": "key_a4152768-b277-486d-959d-bdcb535a4495",
-    "answer": "Ahora necesito el numero de comprobante\n*Ejemplo:F001-150*",
+    "ref": "801b7a60-818d-42b5-a696-537c95f13154",
+    "answer": "Listo 🤙 *Pedido confirmado*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "0613de79cc723c735b1b1e456c2b003f"
+  },
+  {
+    "ref": "bb5dc01e-2927-4204-8831-1937fb339a18",
+    "keyword": "8e18a7e92a2a646d2d79e385a3a290d6",
+    "answer": "Hola",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "c22e4066d61d81721def9b25d8a397e8"
+  },
+  {
+    "ref": "ans_4b013f58-3a03-4f9f-8b93-6df0b24a4de9",
+    "keyword": "key_39bdf179-079e-44e6-9162-ade506224ef4",
+    "answer": "🤖 Hola, soy Piter su asistente virtual.",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "54c52621a0d951393e0af1f76e43dc16",
+    "from": "51922479325"
+  },
+  {
+    "ref": "2611a042-b704-45c0-b906-54ad223f3aa4",
+    "answer": "👋 Hola *Cristina*, que gusto saludarte nuevamente",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "74142b840260d96bd7d643a870e6e02e"
+  },
+  {
+    "ref": "ans_4e2bab59-f300-41f6-8d21-0638635a36de",
+    "keyword": "ans_4a30623b-ab21-468b-b72b-78cab2123397",
+    "answer": "👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n*3*  📃 para reenviarte un comprobante",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "nested": [
+        {
+          "ref": "key_52a5380a-8be3-4880-a7f6-b6ca90322982",
+          "keyword": [
+            "1",
+            "2",
+            "_event_voice_note__77ed11bc-b9e3-4588-bbe2-e88a447fc1a0"
+          ],
+          "options": {
+            "sensitive": false,
+            "regex": false
+          },
+          "refSerialize": "0443c5057c59ddb1eb6ae01f3bb4dc4d"
+        },
+        {
+          "ref": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+          "keyword": "key_52a5380a-8be3-4880-a7f6-b6ca90322982",
+          "answer": "Ya sabe que pedir? ó desea que le envie la carta?, escribe:\n*1* 🗒️ para tomarte el pedido\n*2* 🎴 para enviarte la carta",
+          "options": {
+            "media": null,
+            "buttons": [],
+            "capture": true,
+            "child": null,
+            "delay": 0,
+            "nested": [],
+            "keyword": {},
+            "callback": true
+          },
+          "refSerialize": "6db1672fa071bed10c9aabdeaea20032"
+        },
+        {
+          "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+          "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+          "answer": "Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*",
+          "options": {
+            "media": null,
+            "buttons": [],
+            "capture": true,
+            "child": null,
+            "delay": 0,
+            "nested": [],
+            "keyword": {},
+            "callback": true
+          },
+          "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4"
+        },
+        {
+          "ref": "key_9fbb84ac-e5cd-4b5d-9cde-81d0fd9a9553",
+          "keyword": [
+            "3",
+            "comprobante",
+            "reenviar comprobante"
+          ],
+          "options": {
+            "sensitive": false,
+            "regex": false
+          },
+          "refSerialize": "d2a37336590bf6711925d5649e5efd9f"
+        },
+        {
+          "ref": "ans_87024a4b-ca0f-422e-a8cb-fbfc114a95e4",
+          "keyword": "key_9fbb84ac-e5cd-4b5d-9cde-81d0fd9a9553",
+          "answer": "📃 Para poder encontrar el comprobante:\nPor favor digame el *ruc* o *dni* del cliente -a quien fue emitido-",
+          "options": {
+            "media": null,
+            "buttons": [],
+            "capture": true,
+            "child": null,
+            "delay": 0,
+            "nested": [],
+            "keyword": {},
+            "callback": true
+          },
+          "refSerialize": "2c31916cb122a1ede5a68e5fa24e5dda"
+        }
+      ],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "373db47ece22fa42a68f4fcd4d57cb5e",
+    "from": "51922479325"
+  },
+  {
+    "ref": "af5601f7-ab86-4b78-a723-737445c52eca",
+    "keyword": "373db47ece22fa42a68f4fcd4d57cb5e",
+    "answer": "1",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
+  },
+  {
+    "ref": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "keyword": "key_52a5380a-8be3-4880-a7f6-b6ca90322982",
+    "answer": "Ya sabe que pedir? ó desea que le envie la carta?, escribe:\n*1* 🗒️ para tomarte el pedido\n*2* 🎴 para enviarte la carta",
     "options": {
       "media": null,
       "buttons": [],
@@ -174,21 +543,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "ee7c4152c961292193f76801640a71b1",
-    "from": "51934746830"
+    "refSerialize": "6db1672fa071bed10c9aabdeaea20032",
+    "from": "51922479325"
   },
   {
-    "ref": "e771257d-1269-40e6-b8a6-ad01d61eb3a6",
-    "keyword": "ee7c4152c961292193f76801640a71b1",
-    "answer": "b001-981",
+    "ref": "0481ce87-60b2-45f2-a118-440bb5193bc4",
+    "keyword": "6db1672fa071bed10c9aabdeaea20032",
+    "answer": "1",
     "options": {},
-    "from": "51934746830",
-    "refSerialize": "c4816513576a7700a3fbf6ba91eab284"
+    "from": "51922479325",
+    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
   },
   {
-    "ref": "ans_841b1070-1e3d-4f8d-9da1-367199b6e45f",
-    "keyword": "key_a4152768-b277-486d-959d-bdcb535a4495",
-    "answer": "Esto es lo que entendi:\nDNI= 00000000\nNumero= b001-981\n\n¿Es correcto? escriba *si* o *no*",
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*",
     "options": {
       "media": null,
       "buttons": [],
@@ -199,15 +568,209 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "ee7c4152c961292193f76801640a71b1",
-    "from": "51934746830"
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
   },
   {
-    "ref": "3eae3607-94eb-4a0a-b3db-ec1b775851d6",
-    "keyword": "ee7c4152c961292193f76801640a71b1",
-    "answer": "si",
+    "ref": "a2921372-bcf8-49dd-a0b1-fdf2730327f2",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "_event_voice_note__6f8c29f7-de92-4e08-a444-9b537285a329",
     "options": {},
-    "from": "51934746830",
-    "refSerialize": "715ca38ec28b8dabb30e75e511c57a3a"
+    "from": "51922479325",
+    "refSerialize": "fc18e1bca6b0174b383088adb02997fb"
+  },
+  {
+    "ref": "04686ab3-a755-4bd7-aa2c-7db2fce3f36b",
+    "answer": "dame un momento para escucharte...🙉",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "7eeba7336287280b4ee36ff398851aad"
+  },
+  {
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "¿Desea algo más?",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
+  },
+  {
+    "ref": "f9738a4f-e52b-495c-8378-5480d4ddd19d",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "No",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "8e18a7e92a2a646d2d79e385a3a290d6"
+  },
+  {
+    "ref": "ans_df948ef0-6e25-4b59-b060-8aad5d6dc88d",
+    "keyword": "ans_0faac6ab-9bfd-4400-9c91-06bb82aa2356",
+    "answer": "Confirme, esto es lo que entendi:\n1 - ají de gallina\n 1 - arroz con leche.\n\nEscriba *confirmar* para continuar.",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "from": "51922479325"
+  },
+  {
+    "ref": "9526d9f1-46b2-40cc-bbe0-520778e58842",
+    "keyword": "03e7dfd2fd00117d6e4d2f3d0dc1efa4",
+    "answer": "Confirmar",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "4cfe2e35c2394d1a8697288e4d47979c"
+  },
+  {
+    "ref": "9cb97ad9-4eed-4953-9aa7-9989e059a04d",
+    "answer": "Ok",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "c9bf2a58834582c83aed110b6b35d5f6"
+  },
+  {
+    "ref": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "keyword": "key_2693b92f-ceea-4942-ae78-86560b494188",
+    "answer": "Ahora, seleccione el canal, escriba:\n*1* Para Delivery 🛵\n*2* Para Recoger 👜\n*3* Para Reservar 🕜",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "bd7136ef64061f08b37c840229179120",
+    "from": "51922479325"
+  },
+  {
+    "ref": "ab239bfd-7b66-4080-b955-88ebf05305f9",
+    "keyword": "bd7136ef64061f08b37c840229179120",
+    "answer": "1",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
+  },
+  {
+    "ref": "b4ba3bd0-acdf-4f63-8f29-cefe394ea26c",
+    "answer": "El costo total del pedido es: *S/.30.00*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "69ca8dd76081d920e300d6860c5e5e0a"
+  },
+  {
+    "ref": "ans_d5408b22-a5c5-458b-993f-3bc375c614de",
+    "keyword": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "answer": "Ahora seleccione como desea pagar, escriba:\n*1* Para Efectivo\n*2* Para Yape\n*3* Para Plin",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "from": "51922479325"
+  },
+  {
+    "ref": "8abd1445-e6d0-4500-a98c-049342d6faf6",
+    "keyword": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "answer": "Quiero otra dirección",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "e1c2255aedc6e4431d8ebad910e7226f"
+  },
+  {
+    "ref": "ans_d5408b22-a5c5-458b-993f-3bc375c614de",
+    "keyword": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "answer": "Escriba un numero valido, para seleccionar el tipo de pago",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "from": "51922479325"
+  },
+  {
+    "ref": "823d8b1e-5393-4632-ae43-387c1518ced2",
+    "keyword": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "answer": "3",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
+  },
+  {
+    "ref": "ans_d5408b22-a5c5-458b-993f-3bc375c614de",
+    "keyword": "ans_1d9d78c4-095f-49b0-8c75-03daf19d3565",
+    "answer": "¿Desea cubiertos?",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "from": "51922479325"
+  },
+  {
+    "ref": "a1eaa3a2-5494-400f-8903-627131de1188",
+    "keyword": "cf78eef76c29fa5cc8be4dd97c1b36f1",
+    "answer": "No",
+    "options": {},
+    "from": "51922479325",
+    "refSerialize": "8e18a7e92a2a646d2d79e385a3a290d6"
+  },
+  {
+    "ref": "46d4a48c-027a-4a59-8387-3c983dc46d8b",
+    "answer": "Listo 🤙 *Pedido confirmado*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false
+    },
+    "from": "51922479325",
+    "refSerialize": "0613de79cc723c735b1b1e456c2b003f"
   }
 ]

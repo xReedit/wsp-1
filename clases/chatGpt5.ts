@@ -13,6 +13,8 @@ export class ChatGPT {
         this.apiUrl = 'https://api.openai.com/v1/chat/completions';
         this.rolResponde = rolResponde;
         this.rolEnvia = rolEnvia;
+
+        this.clearConversationLog()
     }
 
     private async generateResponse(prompt: string, rol: string= 'user'): Promise<string> {
@@ -117,5 +119,10 @@ export class ChatGPT {
 
     public getConversationLog(): string[] {
         return this.conversationLog;
+    }
+
+    public clearConversationLog(): void {
+        this.conversationLog = [];
+
     }
 }

@@ -10,5 +10,6 @@ demo01_sessions
 demo02_sessions
 tokens
 tmp
+.env
 
 config.js

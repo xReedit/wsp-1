@@ -20,7 +20,7 @@ export const flowPrincipal = (infoPedido: ClassInformacionPedido) => {
         async (ctx, { endFlow, flowDynamic, provider }) => {            
 
             // buscamos al cliente por el numero de telefono
-            const _num_telefono = '934746830' // ctx.from                                        
+            const _num_telefono = ctx.from                                        
             // const _num_telefono = ctx.from                                        
             infoCliente = await getClienteByCelular(_num_telefono, infoCliente)                        
             console.log('infoCliente', infoCliente);

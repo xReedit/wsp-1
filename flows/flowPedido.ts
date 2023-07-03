@@ -9,6 +9,7 @@ import { buscarCoincidencias, consularLoQueHay, consultarPlato, insertarPlatosEn
 // import { flowConfirmaPedido } from "./flowConfirmaPedido";
 import { ClassCliente } from "../clases/cliente";
 import { ClassInformacionPedido } from "../clases/info.pedido.class";
+import { config } from "../config";
 
 
 // activar 1 hacer pedido
@@ -32,14 +33,20 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
     let isWaitConfirmar = false
     let intentosEntederPedido = 0
 
-    let infoSede = infoPedido.getSede() 
-
-    let chatGpt = new ChatGPT('mesero', 'cliente')
+    let infoSede = infoPedido.getSede()
+    let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
+    // let chatGpt = new ChatGPT('mesero', 'cliente')    
 
     // const _flowConfirmaPedido = flowConfirmaPedido(data_pedido, classCliente, chatGpt)
         
 
-    return addKeyword(['1', '2', EVENTS.VOICE_NOTE])    
+    return addKeyword(['1', '2', EVENTS.VOICE_NOTE])  
+    .addAction(
+        async () => {
+            // reset de variables
+            chatGpt.clearConversationLog()
+        }
+    )  
     .addAnswer([
         'Ya sabe que pedir? ó desea que le envie la carta?, escribe:',
         '*1* 🗒️ para tomarte el pedido',
@@ -110,10 +117,10 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
 
                 let rowHorarios = []
                 rowHorarios.push('👉 Puede hacer su pedido en el siguiente horario: \n')
-                const _saltoParrafo = _listaCartaHorarios.length > 1 ? '\n' : ''
+                const _saltoParrafo = _listaCartaHorarios.length > 1 ? '\n\n' : ''
                 _listaCartaHorarios.forEach(async (item, index) => {
                     if (item.hora_ini !== '') {
-                        rowHorarios.push(`*${capitalize(item.descripcion)}* de ${convertirHora12hrs(item.hora_ini)} a ${convertirHora12hrs(item.hora_fin)}${_saltoParrafo}`)
+                        rowHorarios.push(`*${capitalize(item.descripcion)}* de ${convertirHora12hrs(item.hora_ini)} a ${convertirHora12hrs(item.hora_fin)}\nlos dias ${item.nom_dias}${_saltoParrafo}`)
                     }
                 })
 
@@ -136,6 +143,7 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             }
 
             // preparamos la ia con el prompt de mozo
+            chatGpt = new ChatGPT('mesero', 'cliente') 
             chatGpt.sendPrompt(PROMPTS.rolMozo)                                                       
         }
     )
@@ -276,7 +284,7 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
         _listCartasActivas.forEach(async (carta) => {
             await sock.sendMessage(jid, {
                 caption: capitalize(carta.descripcion),
-                image: { url: `./images/${carta.url_carta}` }
+                image: { url: `${config.URL_IMG_CARTA}${carta.url_carta}` }
             })
         })
     }

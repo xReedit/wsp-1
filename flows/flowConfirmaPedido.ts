@@ -22,7 +22,8 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
     let keyDatoFalta = ''
 
     // configuramos el chatgpt
-    let chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
+    let chatGptConfirmaPedido: ChatGPT // = new ChatGPT('asistente', 'cliente')
+    // let chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
     let isRecopilandoDatos = false
     let isClienteConfirmaDireccion = false
     let isClienteEligeListDireccion = false
@@ -80,7 +81,13 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
 
     return addKeyword(['confirmar', 'confirmo', 'confirmado', 'confirma', EVENTS.LOCATION, EVENTS.VOICE_NOTE])    
-    // .addAnswer(`Listo, continuamos...`)
+    .addAction(
+        async () => {
+            // reset de variables
+            chatGptConfirmaPedido.clearConversationLog()
+            datosRecopiladosDelCliente = {}
+        }
+    )
     .addAnswer([
         `Ahora, seleccione el canal, escriba:`,
         `${_listShowCanalConsumo.join('\n')}`,    
@@ -110,6 +117,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
             if (preguntaSiEstaConformeOk) {
                 if (userResponse.includes('ok')) {
                     enviarPedido()
+                    chatGptConfirmaPedido.clearConversationLog()
                     return await endFlow('Listo 🤙 *Pedido confirmado*') // enviar pedido
                 }
             }
@@ -188,6 +196,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                     // infoCliente.setReferenciaDireccion(datosRecopiladosDelCliente.referencia_de_la_direccion)
 
                     infoCliente.setNombrePila(datosRecopiladosDelCliente.nombre)
+                    infoCliente.setNombre(datosRecopiladosDelCliente.nombre)
                     infoCliente.setCelular(datosRecopiladosDelCliente.telefono)
                     infoPedido.setCliente(infoCliente)
 
@@ -272,6 +281,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                 // canal de consumo
                 _prompt = _prompt.replace('{canal_consumo}', canalConsumoSeleted.descripcion)
 
+                chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
                 const _rptChatGpt = await chatGptConfirmaPedido.sendPrompt(_prompt)
                 chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
                 console.log('_rptChatGpt', _rptChatGpt);
@@ -347,9 +357,10 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
             if (preguntaSiDeseaCubiertos ) {
                 preguntaSiDeseaCubiertos = userResponse.toLowerCase().includes('si') ? true : false
-                infoPedido.setSolicitaCubiertos(true)
+                infoPedido.setSolicitaCubiertos(preguntaSiDeseaCubiertos)
                    
                 enviarPedido()
+                chatGptConfirmaPedido.clearConversationLog()
                 return await endFlow('Listo 🤙 *Pedido confirmado*') // enviar pedido
             }
 
@@ -401,6 +412,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
     // solicitar datos al cliente segun el canal de consumo
     function datosSolicitarSegunCanal(idshow) {
+        datosRecopiladosDelCliente = {}
         const _datosCliente = [
             { //delivery                 
                 "nombre": "",
@@ -437,6 +449,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
     function enviarPedido() {
         pedidoEnviar.armarPedido(infoPedido, infoCliente)
         pedidoEnviar.enviarPedido(infoPedido)
+        chatGptConfirmaPedido.clearConversationLog()
     }
 
     function setTipoCanalConsumoSeleted(canalConsumoSeleted: any) {

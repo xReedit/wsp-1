@@ -14,8 +14,9 @@ export  class ClassCliente {
     private isDireccionRegistrada: boolean = false;
     private idcliente_pwa_direccion: number = 0;
 
-    constructor(nombre: string='', apellido: string = '', celular: string = '', direcciones: string[] = [''], ruc:string = '', idcliente: number=0, isregister:boolean = false , referencia_de_direccion: string = '', num_personas: number = 0, hora_llegada: string = '', isDireccionRegistrada: boolean = false, idcliente_pwa_direccion: number = 0) {
+    constructor(nombre: string='', apellido: string = '', celular: string = '', direcciones: string[] = [''], ruc:string = '', idcliente: number=0, isregister:boolean = false , referencia_de_direccion: string = '', num_personas: number = 0, hora_llegada: string = '', isDireccionRegistrada: boolean = false, idcliente_pwa_direccion: number = 0, nombre_pila: string = '') {
         this.nombre = nombre;
+        this.nombre_pila = nombre_pila;
         this.apellido = apellido;
         this.celular = celular;
         this.direcciones = direcciones;
