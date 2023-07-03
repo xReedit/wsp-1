@@ -1,6 +1,6 @@
 // import { config } from "../config";
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 export class ChatGPT {    
     private conversationLog: string[];

@@ -3,8 +3,8 @@
 // import { Client } from '@googlemaps/google-maps-services-js';
 // import { config } from "../config";
 
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 export class GeolocationServices {
     

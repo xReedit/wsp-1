@@ -2,8 +2,8 @@ import e from 'express';
 import  BotApp  from './piter';
 import * as fs from 'fs'
 
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 const sessions: { [name: string]: BotApp } = {};
 

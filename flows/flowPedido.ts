@@ -11,8 +11,8 @@ import { ClassCliente } from "../clases/cliente";
 import { ClassInformacionPedido } from "../clases/info.pedido.class";
 // import { config } from "../config";
 
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 
 // activar 1 hacer pedido

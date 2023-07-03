@@ -5,8 +5,8 @@ import cors from 'cors';
 import socketsConnect  from './controllers/socket';
 // import { config } from './config';
 
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config'
+// dotenv.config();
 
 // import 'dotenv/config'
 

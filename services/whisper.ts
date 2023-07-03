@@ -2,8 +2,8 @@ const fs = require("fs");
 import { Configuration, OpenAIApi } from "openai";
 // import { config } from "../config";
 
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 /**
  *
