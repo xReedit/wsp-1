@@ -63,6 +63,11 @@ const socketsConnect = (io: any) => {
             // eventos
             session.adapterProviderEvent.on('require_action', (data) => {
                 // muestra el codigo QR -session NO inciada-
+
+                if ( socket.disconnected ) {
+                    session.adapterProviderEvent.vendor.logout()
+                    return}; 
+
                 console.log('Session no iniciada ', data)
                 socket.emit('session_init', false)
 
@@ -89,7 +94,7 @@ const socketsConnect = (io: any) => {
             // console.log('session', session);
             try {
                 session.adapterProviderEvent.vendor.logout()
-                session.adapterProviderEvent.vendor.end()
+                // session.adapterProviderEvent.vendor.end()
             } catch (error) {
                 console.log('error', error);
             }
