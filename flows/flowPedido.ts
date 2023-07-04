@@ -15,42 +15,51 @@ import { ClassInformacionPedido } from "../clases/info.pedido.class";
 // dotenv.config();
 
 import endpoint from '../endpoints.config';
+import { SqliteDatabase } from "../services/sqlite.services";
+import { ClassInfoSede } from "../clases/sede";
 
 
 // activar 1 hacer pedido
 // activar 2 mostrar carta
-export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
+
+export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =>{
 
     // indica si estamos atentos al pedido del cliente
     let url_img_carta = endpoint.url_img_carta
-    let showTomarPedido = false
     let mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
     let _listCartasActivas = []
-    // let chatHistory = PROMPTS.rolMozo;
-    let listPedidoCliente = []
     let cartaEstablecimiento: any = []
+
+    // let showTomarPedido = false
+    // let chatHistory = PROMPTS.rolMozo;
+    // let listPedidoCliente = []
     // let data_pedido: any = []
-    let platosNoEcontrados: any = []
-    let platosSinStock: any = []
-    let platosEcontrados: any = []  
-    let platosRecomendados: any = []
-    let seccionesPlatosElegidos = []
-    let isWaitResponse = false
-    let isWaitConfirmar = false
-    let intentosEntederPedido = 0
+    // let platosNoEcontrados: any = []
+    // let platosSinStock: any = []
+    // let platosEcontrados: any = [] } 
+    // let platosRecomendados: any = []
+    // let seccionesPlatosElegidos = []
+    // let isWaitResponse = false
+    // let isWaitConfirmar = false
+    // let intentosEntederPedido = 0
 
-    let infoSede = infoPedido.getSede()
+    // let infoPedido = new ClassInformacionPedido()
+
     // let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
-    let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
     // let chatGpt = new ChatGPT('mesero', 'cliente')    
-
+    
     // const _flowConfirmaPedido = flowConfirmaPedido(data_pedido, classCliente, chatGpt)
-        
+    
+    let infoSede: ClassInfoSede = _infoSede
+    let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
 
     return addKeyword(['1', '2', EVENTS.VOICE_NOTE])  
     .addAction(
         async () => {
             // reset de variables
+            // showTomarPedido = false
+            // intentosEntederPedido = 0
+
             try {
                 chatGpt.clearConversationLog()                
             } catch (error) {
@@ -67,11 +76,18 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             capture: true
         },
         async (ctx, { endFlow, flowDynamic, provider }) => {            
-            if (isWaitResponse) {
-                return;
-            }
+           
 
-         
+            let infoPedido = new ClassInformacionPedido()
+            infoPedido = await database.getInfoPedido(ctx.from)
+
+            let infoFlowPedido = infoPedido.getVariablesFlowPedido()
+
+            console.log('infoFlowPedido 86', infoFlowPedido);
+
+            // if (!infoFlowPedido.isWaitResponse) {
+            //     return;
+            // }
 
             let rptUser = ctx.body.toLowerCase().trim()
             let isShowCarta = false
@@ -89,14 +105,15 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
 
             // lista de carta con sus horarios de atencion
             // const _listaCartaHorarios = await getListCartaHorariosAtencion(infoSede.sede.idsede)
-            const _listaCartaHorarios = infoPedido.getHorariosAtencion()
+            const _listaCartaHorarios = infoSede.getHorariosAtencion()//  infoPedido.getHorariosAtencion()
 
             const jid = ctx.key.remoteJid
             const sock = await provider.getInstance(jid)
             await sock.presenceSubscribe(jid)
             await sock.sendPresenceUpdate('composing', jid)
 
-            isWaitResponse = true;
+            // isWaitResponse = true;
+            infoFlowPedido.isWaitResponse = true            
                         
             // mostrar carta
             if (['1', '2'].includes(rptUser) === false) {
@@ -117,13 +134,18 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             isCartaActiva = _listCartasActivas.length === 0 ? false : true            
            
             
-            showTomarPedido = true
+            // showTomarPedido = true
+            infoFlowPedido.showTomarPedido = true
+
+            console.log('infoFlowPedido change 140', infoFlowPedido);
+
             mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
 
             // no hay carta disponible
             if (!isCartaActiva) {                
                 await sock.sendMessage(jid, { text: '😔 Disculpa, estamos fuera del horario de atencion 🕰️' })
-                showTomarPedido = false
+                // showTomarPedido = false
+                infoFlowPedido.showTomarPedido = true
                 mensageTomarPedido = '🫡'
 
                 let rowHorarios = []
@@ -140,13 +162,24 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
                 //quitar comas                            
                 await sock.sendMessage(jid, { text: rowHorarios.join(',').replace(/,/g, '') })
                 
-                isWaitResponse = false
+                infoFlowPedido.isWaitResponse = false
+
+                console.log('guarda infoFlowPedido 162', infoFlowPedido);
+
+                infoPedido.setVariablesFlowPedido(infoFlowPedido)
+                database.update(ctx.from, infoPedido)
+
                 return endFlow(mensageTomarPedido)
                 // return flowDynamic(mensageTomarPedido)
             }
 
+            console.log('guarda infoFlowPedido 171', infoFlowPedido);
+            infoPedido.setVariablesFlowPedido(infoFlowPedido)
+            database.update(ctx.from, infoPedido)
+
             // obtenemos la carta del establecimiento
-            cartaEstablecimiento = await getCartaEstablecimiento(infoSede.idsede)
+            // cartaEstablecimiento = await getCartaEstablecimiento(infoSede.idsede)
+            cartaEstablecimiento = await getCartaEstablecimiento(infoSede.getSede().idsede) 
 
             if (isShowCarta) {                     
                 adjuntarCarta(sock, jid)
@@ -163,7 +196,14 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             capture: true        
         },
         async (ctx,{ endFlow, flowDynamic, provider, fallBack }) => {
-            if (!showTomarPedido) {
+            // recuperamos los datos de database
+            let infoPedido = new ClassInformacionPedido()
+            infoPedido = await database.getInfoPedido(ctx.from)
+            let infoFlowPedido = infoPedido.getVariablesFlowPedido()
+
+            console.log('infoFlowPedido 204', infoFlowPedido);
+            // if (!showTomarPedido) {
+            if (!infoFlowPedido.showTomarPedido) {
                 // return endFlow()
                 return flowDynamic('vamos')
             }
@@ -184,38 +224,30 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
                 userResponse = text
             }
             
-            const isConfirmar = userResponse.includes('confirmar')
-            if (isConfirmar && isWaitConfirmar) {
-                isWaitConfirmar = false
-                isWaitResponse = false
-                return await flowDynamic('Ok')    
+            // const isConfirmar = userResponse.includes('confirmar')    
+            if (infoFlowPedido.isWaitConfirmar) {
+                const isConfirmar = ['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm'].includes(userResponse.toLowerCase());                
+                if (isConfirmar) {
+                    infoFlowPedido.isWaitConfirmar = false
+                    infoFlowPedido.isWaitResponse = false
+                    return await flowDynamic('Ok')
+                }
             }
             
             // enviamos la respuesta del usuario
             let modelResponse = await chatGpt.sendMessage(userResponse)        
-            // console.log('modelResponse', modelResponse);            
-
-            // const isConsultarPlato = modelResponse.includes('consular_plato=')
             
             // si interpreta que es un pedido
             const isPedido = modelResponse.includes('pedido=')
-            // console.log('isPedido', isPedido);
-            // const isConfirmar = userResponse.includes('confirmar')
+
             let rptReturn = modelResponse;
 
-            // if (isConfirmar) {                
-            //     rptReturn = `Confirme, esto es lo que entendi:\n${listPedidoCliente.join('\n').toLowerCase().trim()}\n\nEscriba *confirmar* para continuar.`
-            //     chatGpt.setRowConversationLog(`mesero=escriba confirmar, para enviar su pedido. O desea agregar algo mas?`)
-            //     return await fallBack(rptReturn);
-            // }
 
             if (isPedido) {
-                const _modelResponse = modelResponse.replace('pedido=', '').replace('¿Desea algo más?', '')    
-                // console.log('add list', _modelResponse);                
-                listPedidoCliente = _modelResponse.split(',')
-                // console.log('listPedidoCliente', listPedidoCliente);
+                const _modelResponse = modelResponse.replace('pedido=', '').replace('¿Desea algo más?', '')                             
+                const listPedidoCliente = _modelResponse.split(',')                
                 
-                const _rptDisponibilidad = await getDisponibilidad(listPedidoCliente)
+                const _rptDisponibilidad = await getDisponibilidad(listPedidoCliente, infoFlowPedido, infoPedido, ctx.from)
 
                 if (_rptDisponibilidad === '' ) {
                     rptReturn = '¿Desea algo más?'                    
@@ -223,6 +255,9 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
                     rptReturn = `Ups! 😔\n${_rptDisponibilidad}`
                     chatGpt.setRowConversationLog(`mesero=ups! ${_rptDisponibilidad}`)
                 }
+
+                infoPedido.setVariablesFlowPedido(infoFlowPedido)
+                database.update(ctx.from, infoPedido)
                 return await fallBack(rptReturn);
             }
 
@@ -242,6 +277,9 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
             // console.log('opSelected', opSelected);
             if (opSelected === undefined) {
+                infoPedido.setVariablesFlowPedido(infoFlowPedido)
+                database.update(ctx.from, infoPedido)
+
                 return await fallBack('No entendí su respuesta, repita por favor.');
             }
 
@@ -268,17 +306,20 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
                     rptReturn = consultar_platos_que_hay()                    
                     chatGpt.setRowConversationLog(`mesero=${rptReturn}`)
                     break;     
-                case 4:
-                    // rptReturn = `Entendido, su pedido es:\n${listPedidoCliente.join('\n')}\n\nResponda escribiendo *si* para procesarlo`  
-                    // chatGpt.setRowConversationLog(`mesero=escriba confirmar, para continuar. O desea agregar algo mas?`)
-                    isWaitConfirmar = true
-                    rptReturn = `Confirme, esto es lo que entendi:\n${listPedidoCliente.join('\n').toLowerCase().trim()}\n\nEscriba *confirmar* para continuar.`
+                case 4:                    
+                    infoFlowPedido.isWaitConfirmar = true
+                    const _nomPlatosEncontrados = infoFlowPedido.platosEcontrados.map(item => `${item.cantidad_seleccionada} ${item.des}`)
+                    rptReturn = `Confirme, esto es lo que entendi:\n${_nomPlatosEncontrados.join('\n').toLowerCase().trim()}\n\nEscriba *CONFIRMAR* para continuar.`
                     chatGpt.setRowConversationLog(`mesero=escriba confirmar, para enviar su pedido. O desea agregar algo mas?`)
                     // return await fallBack(rptReturn);
                     break;
             }      
             
             // await delay(4000)
+
+            //guardamos en database
+            infoPedido.setVariablesFlowPedido(infoFlowPedido)
+            database.update(ctx.from, infoPedido)
             return await fallBack(rptReturn);
 
 
@@ -338,16 +379,18 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
     }
 
     // evaluar que todo lo que pide exista
-    async function getDisponibilidad(listPedidoCliente) {        
-        const itemsCarta = cartaEstablecimiento.carta.flatMap(item => item.secciones.flatMap(seccion => seccion.items)) || [];
+    async function getDisponibilidad(listPedidoCliente, infoFlowPedido, infoPedido, ctxFrom) {        
 
-        [platosEcontrados, platosNoEcontrados, platosSinStock, platosRecomendados] = buscarCoincidencias(itemsCarta, listPedidoCliente)
+        const itemsCarta = cartaEstablecimiento.carta.flatMap(item => item.secciones.flatMap(seccion => seccion.items)) || [];
+        const [platosEcontrados, platosNoEcontrados, platosSinStock, platosRecomendados] = buscarCoincidencias(itemsCarta, listPedidoCliente)
 
         // console.log('encontrados', platosEcontrados);
         // console.log('noEncontrados', platosNoEcontrados);
         // console.log('cantidadesMayores', platosSinStock);  
 
-        seccionesPlatosElegidos = insertarPlatosEnSeccion(cartaEstablecimiento.carta, platosEcontrados);        
+        infoFlowPedido.platosEcontrados = platosEcontrados
+
+        const seccionesPlatosElegidos = insertarPlatosEnSeccion(cartaEstablecimiento.carta, platosEcontrados);        
         infoPedido.setPedidoCliente(seccionesPlatosElegidos);
         // pedidoValidadoCliente = platosEcontrados; 
 
@@ -365,7 +408,9 @@ export const flowPedido = (infoPedido: ClassInformacionPedido) =>{
             rpt += `No encontré los siguientes platos:\n*${platosNoEcontrados.join('\n')}*\n\nPor favor, verifique la ortografía y vuelva a escribirlo.`
         }
 
-
+        // guardamos en database
+        infoPedido.setVariablesFlowPedido(infoFlowPedido)
+        database.update(ctxFrom, infoPedido)
         return rpt
     }    
 }    

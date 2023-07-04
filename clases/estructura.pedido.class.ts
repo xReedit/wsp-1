@@ -4,6 +4,7 @@ import { postDataPedidoBot } from "../services/httpClient.services";
 import { JsonPrintService } from "../services/json-print.services";
 import { ClassCliente } from "./cliente";
 import { ClassInformacionPedido } from "./info.pedido.class";
+import { ClassInfoSede } from "./sede";
 
 interface Estructura {
     p_body: {
@@ -48,16 +49,23 @@ export class ClassEstructuraPedido {
 
 
     // proceso de armado del pedido
-    public armarPedido(infoPedido: ClassInformacionPedido, infoCliente: ClassCliente) {
+    public armarPedido(infoSede: ClassInfoSede, infoPedido: ClassInformacionPedido, infoCliente: ClassCliente) {
         let rptImporteTotalPagar = 0
         let canalConsumoSeleted = infoPedido.getCanalConsumoSeleted()
         const subtotalCostoEntrega = infoPedido.getSubtotalCostoEntrega()
-        const infoSede = infoPedido.getSede()
+        // const infoSede = infoPedido.getSede()
         const classSubtotales = new ClassGetSubTotales()
-        const listImpresoras = infoPedido.getlistImpresoras()
+        const listImpresoras = infoSede.getlistImpresoras()
         let arrDatosReserva = {}
+
+        // const _infoCliente = infoPedido.getCliente();
+        // console.log('_infoCliente', _infoCliente);
+        // let infoCliente = new ClassCliente()
+        // infoCliente.setCliente(_infoCliente) 
+
         let referenciaPedido = infoCliente.getNombre()
         let nomDireccion = ''
+        let _infoSede = infoSede.getSede()
 
         // colocamos mayusculas al canal de consumo
         canalConsumoSeleted.descripcion = canalConsumoSeleted.descripcion.toUpperCase()
@@ -65,7 +73,7 @@ export class ClassEstructuraPedido {
 
         // subtotales
         // await classSubtotales.getRules(infoSede.idsede, infoSede.idorg)
-        classSubtotales.setRules(infoPedido.getListReglasCarta())         
+        classSubtotales.setRules(infoSede.getListReglasCarta())         
         let arrSubtotales = classSubtotales.getSubtotales(canalConsumoSeleted.secciones, canalConsumoSeleted.idtipo_consumo, subtotalCostoEntrega)
         this.setSubtotal(arrSubtotales)
 
@@ -117,8 +125,8 @@ export class ClassEstructuraPedido {
         // array delivery
         let arrDatosDelivery: any = {}
         if (_isDelivery) {
-            infoSede.c_servicio = subtotalCostoEntrega.importe
-            infoSede.distancia_km = subtotalCostoEntrega.distancia_km
+            _infoSede.c_servicio = subtotalCostoEntrega.importe
+            _infoSede.distancia_km = subtotalCostoEntrega.distancia_km
             arrDatosDelivery.direccionEnvioSelected = infoCliente.getDireccionSelected()    
             arrDatosDelivery.direccionEnvioSelected.idcliente_pwa_direccion = infoCliente.getIdClientePwaDireccion()
             nomDireccion = arrDatosDelivery.direccionEnvioSelected.direccion
@@ -194,8 +202,8 @@ export class ClassEstructuraPedido {
         const _dataUsuarioSend = {
             'idusuario': 121, // CORREGIRLO
             'idcliente': infoCliente.getIdCliente(),
-            'idorg': infoSede.idorg,
-            'idsede': infoSede.idsede,
+            'idorg': _infoSede.idorg,
+            'idsede': _infoSede.idsede,
             'nombres': 'BOT',
             'cargo': 'BOT',
             'usuario': 'BOT'
@@ -218,14 +226,14 @@ export class ClassEstructuraPedido {
         return rptImporteTotalPagar;
     }   
 
-    public enviarPedido(infoPedido: ClassInformacionPedido) {
+    public enviarPedido(_infoSede: any, infoPedido: ClassInformacionPedido, infoCliente: ClassCliente) {
         const dataSend = infoPedido.getPedidoEnviar()
 
         const dataSocketQuery = {
-            idorg: infoPedido.getSede().idorg,
-            idsede: infoPedido.getSede().idsede,
+            idorg: _infoSede.idorg,
+            idsede: _infoSede.idsede,
             idusuario: 121,
-            idcliente: infoPedido.getCliente().getIdCliente(),
+            idcliente: infoCliente.getIdCliente(),
             iscliente: false,
             isOutCarta: false,
             isCashAtm: false,

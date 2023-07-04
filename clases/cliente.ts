@@ -14,14 +14,14 @@ export  class ClassCliente {
     private isDireccionRegistrada: boolean = false;
     private idcliente_pwa_direccion: number = 0;
 
-    constructor(nombre: string='', apellido: string = '', celular: string = '', direcciones: string[] = [''], ruc:string = '', idcliente: number=0, isregister:boolean = false , referencia_de_direccion: string = '', num_personas: number = 0, hora_llegada: string = '', isDireccionRegistrada: boolean = false, idcliente_pwa_direccion: number = 0, nombre_pila: string = '') {
+    constructor(nombre: string = '', apellido: string = '', celular: string = '', direcciones: string[] = [''], ruc: string = '', idcliente: number = 0, isregister: boolean = false, referencia_de_direccion: string = '', num_personas: number = 0, hora_llegada: string = '', isDireccionRegistrada: boolean = false, idcliente_pwa_direccion: number = 0, nombre_pila: string = '', direccionSeleccionada: any = {} ) {  
         this.nombre = nombre;
         this.nombre_pila = nombre_pila;
         this.apellido = apellido;
         this.celular = celular;
         this.direcciones = direcciones;
         this.ruc = ruc;
-        this.direccionSeleccionada = '';
+        this.direccionSeleccionada = direccionSeleccionada;
         this.idcliente = idcliente;
         this.isregister = isregister;                
         this.referencia_de_direccion = referencia_de_direccion;
@@ -29,6 +29,23 @@ export  class ClassCliente {
         this.hora_llegada = hora_llegada;
         this.isDireccionRegistrada = isDireccionRegistrada;
         this.idcliente_pwa_direccion = idcliente_pwa_direccion;
+    }
+
+    public setCliente(cliente: any) {
+        this.nombre = cliente.nombre;
+        this.nombre_pila = cliente.nombre_pila;
+        this.apellido = cliente.apellido;
+        this.celular = cliente.celular;
+        this.direcciones = cliente.direcciones;
+        this.ruc = cliente.ruc;
+        this.idcliente = cliente.idcliente;
+        this.isregister = cliente.isregister;
+        this.referencia_de_direccion = cliente.referencia_de_direccion;
+        this.num_personas = cliente.num_personas;
+        this.hora_llegada = cliente.hora_llegada;
+        this.isDireccionRegistrada = cliente.isDireccionRegistrada;
+        this.idcliente_pwa_direccion = cliente.idcliente_pwa_direccion;
+        this.direccionSeleccionada = cliente.direccionSeleccionada;
     }
 
     public getNombre(): string {
@@ -95,7 +112,7 @@ export  class ClassCliente {
         this.ruc = ruc;
     }
 
-    setNombrePila(nombre_pila: string) {
+    public setNombrePila(nombre_pila: string) {
         this.nombre_pila = nombre_pila;
     }
 
@@ -103,43 +120,43 @@ export  class ClassCliente {
         return this.nombre_pila || '';
     }
 
-    setReferenciaDireccion(referencia_de_direccion: string) {
+    public setReferenciaDireccion(referencia_de_direccion: string) {
         this.referencia_de_direccion = referencia_de_direccion;
     }
 
-    getReferenciaDireccion() {
+    public getReferenciaDireccion() {
         return this.referencia_de_direccion;
     }
 
-    setNumPersonas(num_personas: number) {
+    public setNumPersonas(num_personas: number) {
         this.num_personas = num_personas;
     }
 
-    getNumPersonas() {
+    public getNumPersonas() {
         return this.num_personas;
     }
 
-    setHoraLlegada(hora_llegada: string) {
+    public setHoraLlegada(hora_llegada: string) {
         this.hora_llegada = hora_llegada;
     }
 
-    getHoraLlegada() {
+    public getHoraLlegada() {
         return this.hora_llegada;
     }
 
-    setIsDireccionRegistrada(isDireccionRegistrada: boolean) {
+    public setIsDireccionRegistrada(isDireccionRegistrada: boolean) {
         this.isDireccionRegistrada = isDireccionRegistrada;
     }
 
-    getIsDireccionRegistrada() {
+    public getIsDireccionRegistrada() {
         return this.isDireccionRegistrada;
     }
 
-    setIdClientePwaDireccion(idcliente_pwa_direccion: number) {
+    public setIdClientePwaDireccion(idcliente_pwa_direccion: number) {
         this.idcliente_pwa_direccion = idcliente_pwa_direccion;
     }
 
-    getIdClientePwaDireccion() {
+    public getIdClientePwaDireccion() {
         return this.idcliente_pwa_direccion;
     }
 

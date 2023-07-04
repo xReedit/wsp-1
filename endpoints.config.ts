@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config();
+
 export default {
     url_api_restobar: process.env.URL_API_RESTOBAR ?? '',
     port_api: process.env.PORT_API ?? '',

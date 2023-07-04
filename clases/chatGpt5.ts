@@ -2,8 +2,12 @@
 // import dotenv from 'dotenv';
 // dotenv.config();
 import endpoint from '../endpoints.config';
+// import { ClassInformacionPedido } from './info.pedido.class';
 
-export class ChatGPT {    
+export class ChatGPT {
+    // flowConfirmaPedido(infoPedido: ClassInformacionPedido) {
+    //     throw new Error("Method not implemented.");
+    // }    
     private conversationLog: string[];
     private apiKey: string;
     private apiUrl: string;
@@ -12,7 +16,7 @@ export class ChatGPT {
 
     constructor(rolResponde: string = 'mesero', rolEnvia: string = 'usuario') {        
         this.conversationLog = [];
-        this.apiKey = endpoint.openai_api_key
+        this.apiKey=endpoint.openai_api_key;
         this.apiUrl = 'https://api.openai.com/v1/chat/completions';
         this.rolResponde = rolResponde;
         this.rolEnvia = rolEnvia;
@@ -21,6 +25,7 @@ export class ChatGPT {
     }
 
     private async generateResponse(prompt: string, rol: string= 'user'): Promise<string> {
+        console.log('pthis.apiKey', this.apiKey);
         try {
             const messages = [{ role: rol, content: prompt }];
             const response = await fetch(this.apiUrl, {
@@ -89,8 +94,7 @@ export class ChatGPT {
             
 
         const previousResponse = this.checkPreviousResponse(prompt);
-        if (previousResponse) {
-
+        if (previousResponse) {            
             this.conversationLog.push(previousResponse);
             return previousResponse;
         }
@@ -126,6 +130,5 @@ export class ChatGPT {
 
     public clearConversationLog(): void {
         this.conversationLog = [];
-
     }
 }

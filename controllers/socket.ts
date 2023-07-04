@@ -1,13 +1,14 @@
 import e from 'express';
 import  BotApp  from './piter';
 import * as fs from 'fs'
+import { SqliteDatabase } from '../services/sqlite.services';
 
 // import dotenv from 'dotenv';
 // dotenv.config();
 
 const sessions: { [name: string]: BotApp } = {};
 
-const socketsConnect = (io: any) => {
+const socketsConnect = (io: any, database: SqliteDatabase) => {
     
 
     io.on('connection', (socket: any) => {
@@ -46,10 +47,12 @@ const socketsConnect = (io: any) => {
                 }
             } else {
                 // Si no existe, crear una nueva sesión
-                session = new BotApp(nameSession, infoSede, socket);
+                session = new BotApp(nameSession, infoSede);
                 sessions[nameSession] = session;                
-                session.init();
+                session.init(database);
             }
+
+            // console.log('session', session);
 
             // console.log('session.adapterProviderEvent', session.adapterProviderEvent);
             // console.log('session.adapterProviderEvent.globalVendorArgs', session.adapterProviderEvent.globalVendorArgs);
@@ -65,7 +68,10 @@ const socketsConnect = (io: any) => {
                 // muestra el codigo QR -session NO inciada-
 
                 if ( socket.disconnected ) {
-                    session.adapterProviderEvent.vendor.logout()
+                    try {
+                        session.adapterProviderEvent.vendor.logout()                        
+                    } catch (error) {                        
+                    }
                     return}; 
 
                 console.log('Session no iniciada ', data)

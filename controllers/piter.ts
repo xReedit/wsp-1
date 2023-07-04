@@ -9,6 +9,8 @@ import { flowPrincipal } from "../flows/flowPrincipal";
 // import { ChatGPT } from '../clases/chatGpt5';
 import { ClassInformacionPedido } from '../clases/info.pedido.class';
 import { flowConfirmaPedido } from '../flows/flowConfirmaPedido';
+import { ClassInfoSede } from '../clases/sede';
+import { SqliteDatabase } from '../services/sqlite.services';
 
 
 
@@ -21,44 +23,50 @@ const JsonFileAdapter = require('@bot-whatsapp/database/json')
 // import * as fs from 'fs'
 
 
-let classCliente = new ClassCliente();
+
+
+
+// let classCliente = new ClassCliente();
 
 class BotApp {
     public adapterProviderEvent: any;
     public elBot: any;
     private nameSession: string;
-    private infoSede: any;
-    private socket: any;
-    private infoPedido: ClassInformacionPedido;
+    private infoSede: ClassInfoSede;
+    // private socket: any;
+    // private infoPedido: ClassInformacionPedido;
     // private chatGpt2: ChatGPT;
 
     
     
 
-    constructor(nameSession: string, infoSede: any, socket: any) {
+    constructor(nameSession: string, infoSede: any) {
         this.nameSession = nameSession;
-        this.infoSede = infoSede;
-        this.socket = socket;
+        this.infoSede = new ClassInfoSede(infoSede)
+        this.infoSede.setSede(infoSede);        
+        // this.socket = socket;
     }
 
-    public async init(): Promise<void> {     
+    public async init(database: SqliteDatabase): Promise<void> {     
 
         // envia las instrucciones a chatgpt       
-        this.infoPedido = new ClassInformacionPedido()
-        this.infoPedido.setSede(this.infoSede)
-        this.infoPedido.setCliente(classCliente)
-
-        
-        const _flowPrincipal = flowPrincipal(this.infoPedido);
-        const _flowConfirmar = flowConfirmaPedido(this.infoPedido)
+        // this.infoPedido = new ClassInformacionPedido()
+        // this.infoPedido.setSede(this.infoSede) //quitar
+        // this.infoPedido.setCliente(classCliente)        
+        // const _flowConfirmar = flowConfirmaPedido(this.infoPedido)
+        const _flowPrincipal = flowPrincipal(this.infoSede, database);
+        const _flowConfirmar = flowConfirmaPedido(this.infoSede, database)
         
 
         // console.log('this.infoSede', infoPedido.getSede());
+        // const _flowTest2 = new FlowTest2(this.infoPedido);
 
         const adapterDB = new JsonFileAdapter()
         const adapterFlow = createFlow([                        
-            _flowPrincipal, _flowConfirmar
+            _flowPrincipal
+            ,_flowConfirmar
             // flowVoiceNote
+            // _flowTest2
         ]);
 
         const adapterProvider = createProvider(BaileysProvider, {
@@ -73,6 +81,7 @@ class BotApp {
             provider: adapterProvider,
             database: adapterDB      
         }); 
+
         
 
         // this.adapterProviderEvent.on('require_action', (data) => {
@@ -97,8 +106,9 @@ class BotApp {
 
     // funcion que actualiza la informacion de la sede
     public updateInfoSede(infoSede: any) {
-        this.infoSede = infoSede
-        this.infoPedido.setSede(this.infoSede)
+        this.infoSede.setSede(infoSede)
+        // this.infoPedido.setSede(this.infoSede)
+        // this.infoSede = infoSede
     }
     
 }

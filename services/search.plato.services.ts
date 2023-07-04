@@ -153,7 +153,16 @@ function primeraBusqueda(platosBuscar: any[], lista: any[], encontrados: any): a
         if (platoEncontrado) {
             plato.encontrado = true;
             plato.iditem = platoEncontrado.iditem
-            encontrados.push(platoEncontrado)
+
+            // verifica si ya esta en lista de encontrados si esta que solo sume la cantidad
+            const _platoEnEncontrados = encontrados.find(x => x.iditem === platoEncontrado.iditem)
+            if (_platoEnEncontrados) {
+                _platoEnEncontrados.cantidad_seleccionada += parseInt(plato.cantidad)
+            } else {
+                encontrados.push(platoEncontrado)
+            }
+
+            // encontrados.push(platoEncontrado)
         }
     });
 
@@ -184,9 +193,17 @@ function segundaBusqueda(platosBuscar: any[], lista: any[], encontrados: any) {
         if (result.length > 0) {
             plato.encontrado = true;
             const nomPlatoCartaEcontrado = result[0].item;
-            const itemPlatoCartaEncontrado = lista.find(x => x.des === nomPlatoCartaEcontrado)
+            const itemPlatoCartaEncontrado = lista.find(x => x.des === nomPlatoCartaEcontrado)            
             plato.iditem = itemPlatoCartaEncontrado.iditem
-            encontrados.push(itemPlatoCartaEncontrado)
+
+            // verifica si ya esta en lista de encontrados si esta que solo sume la cantidad
+            const _platoEnEncontrados = encontrados.find(x => x.iditem === itemPlatoCartaEncontrado.iditem)
+            if (_platoEnEncontrados) {
+                _platoEnEncontrados.cantidad_seleccionada += parseInt(plato.cantidad)                
+            } else {
+                encontrados.push(itemPlatoCartaEncontrado)
+            }
+
         }
     });
 
@@ -229,16 +246,14 @@ export function buscarCoincidencias(listaPlatos: any[], pedidoCliente: any[]) {
 
     listaPlatos.map(x => x.des = convertirFraccionesEnCadenas(x.des.toLowerCase())); // convertimos las fracciones en palabras
 
-    let platosBuscar = cocinarPeticionCliente(pedidoCliente)
-    console.log('platosBuscar == ', platosBuscar);
+    let platosBuscar = cocinarPeticionCliente(pedidoCliente)    
 
     primeraBusqueda(platosBuscar, listaPlatos, encontrados)
     segundaBusqueda(platosBuscar, listaPlatos, encontrados)
 
 
     // de los platos encontrados verificamos la cantidad
-    encontrados.forEach((plato) => {
-        console.log('encontrados plato == ', plato);
+    encontrados.forEach((plato) => {        
         const platoBuscar = platosBuscar.find(x => x.iditem === plato.iditem)
         const cantidadSeleccionada = parseInt(platoBuscar.cantidad)
         const cantidadPlatoCarta = plato.cantidad === 'ND' ? 10000 : parseInt(plato.cantidad)
@@ -255,8 +270,7 @@ export function buscarCoincidencias(listaPlatos: any[], pedidoCliente: any[]) {
             const _precioTotal = cantidadSeleccionada * parseFloat(plato.precio_unitario)
             plato.cantidad_seleccionada = cantidadSeleccionada
             plato.precio_print = _precioTotal.toFixed(2)
-            plato.precio_total = _precioTotal
-            console.log('plato.indicaciones', platoBuscar.indicaciones);
+            plato.precio_total = _precioTotal            
             if (platoBuscar.indicaciones !== '' && platoBuscar.indicaciones !== undefined) {
                 plato.indicaciones = platoBuscar.indicaciones
             }

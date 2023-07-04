@@ -1,0 +1,361 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0FA35106A901DB33F3B',
+    participant: undefined
+  },
+  messageTimestamp: 1688447986,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'hola',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3A38330A33BC1D0208D7',
+    participant: undefined
+  },
+  messageTimestamp: 1688447995,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'Buenas tardes',
+      contextInfo: [ContextInfo]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Buenas tardes',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0B347FCD2536E97D1BE',
+    participant: undefined
+  },
+  messageTimestamp: 1688447999,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '1',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0735FA9C9A5FBE0CF83',
+    participant: undefined
+  },
+  messageTimestamp: 1688448001,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '1',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3AA277F3162B3BC3EA07',
+    participant: undefined
+  },
+  messageTimestamp: 1688448002,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: '1', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB01C1D7496B38669762D',
+    participant: undefined
+  },
+  messageTimestamp: 1688448021,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'quiero 2 chuletas a la parrilla y 2 masamorras',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'quiero 2 chuletas a la parrilla y 2 masamorras',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3AABAEBC27F583A506C5',
+    participant: undefined
+  },
+  messageTimestamp: 1688448022,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '2 arroz con leche, 1 ají de gallina',
+      contextInfo: [ContextInfo]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2 arroz con leche, 1 ají de gallina',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB04E97C4ADB92A460AC6',
+    participant: undefined
+  },
+  messageTimestamp: 1688448027,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'quiero 2 arroz con pato',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'quiero 2 arroz con pato',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3A56D5C72E85F21758ED',
+    participant: undefined
+  },
+  messageTimestamp: 1688448049,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '2 arroz con leche, 1 ají de gallina',
+      contextInfo: [ContextInfo]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2 arroz con leche, 1 ají de gallina',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0CC73E828B0E6829957',
+    participant: undefined
+  },
+  messageTimestamp: 1688448058,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'no',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'no',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3A0AEE96089FC9D30753',
+    participant: undefined
+  },
+  messageTimestamp: 1688448058,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'No', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'No',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3A5F150A91B5D89160F1',
+    participant: undefined
+  },
+  messageTimestamp: 1688448076,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'no', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'no',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB037E5391FFD8F06F07B',
+    participant: undefined
+  },
+  messageTimestamp: 1688448082,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'eso es todo',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'eso es todo',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3A072D674E4B9B1D1D77',
+    participant: undefined
+  },
+  messageTimestamp: 1688448084,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'No', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'No',
+  from: '51960518915'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB088C1BCDFF9E4DEF61E',
+    participant: undefined
+  },
+  messageTimestamp: 1688448087,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'no',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'no',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51960518915@s.whatsapp.net',
+    fromMe: false,
+    id: '3A2F266429381EC2F3AA',
+    participant: undefined
+  },
+  messageTimestamp: 1688448088,
+  pushName: 'Zare ✨',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'No', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'No',
+  from: '51960518915'
+}

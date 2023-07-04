@@ -11,6 +11,7 @@
     "mime-types": "2.1.35",
     "nodemon": "^2.0.22",
     "socket.io": "^4.6.2",
+    "sqlite3": "^5.1.6",
     "ts-node": "^10.9.1"
   },
   "name": "api-piter-chat-bot",
@@ -44,7 +45,6 @@
     "mime-types": "2.1.35",
     "openai": "^3.2.1",
     "typescript": "^5.1.3",
-    "wa-sticker-formatter": "^4.4.4",
-    "whatsapp-web.js": "1.19.4"
+    "wa-sticker-formatter": "^4.4.4"
   }
 }

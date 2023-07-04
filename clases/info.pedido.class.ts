@@ -15,6 +15,8 @@ interface EstructuraInformacion {
         metodoPagoSeleted: any;
         pedidoEnviar: any;
         direccionGeolocalizada: any;
+        variables_flow_pedido: any;
+        variables_flow_confirmar_pedido: any;
 }
 
 export class ClassInformacionPedido {
@@ -35,8 +37,50 @@ export class ClassInformacionPedido {
                 metodoPagoSeleted: {},    
                 pedidoEnviar: {},
                 direccionGeolocalizada: {},
+                variables_flow_pedido: {
+                    showTomarPedido: false,
+                    platosNoEcontrados: [],
+                    platosSinStock: [],
+                    platosEcontrados: [],
+                    platosRecomendados: [],
+                    isWaitResponse: false,
+                    isWaitConfirmar: false,
+                    intentosEntederPedido: 0
+                },
+                variables_flow_confirmar_pedido: {
+                    isRecopilandoDatos: false,
+                    isClienteConfirmaDireccion: false,
+                    isClienteEligeListDireccion: true,
+                    isCuantoPagara: false,
+                    preguntaSiEstaConformeOk: false,
+                    datosRecopiladosDelCliente: {},
+                    tipoPagoSeleted: {},
+                    canalConsumoSeletedMasSeccion: {},
+                    _listDirecciones: []
+                }
         };
     }
+
+    public setVariablesFlowConfirmarPedido(variablesFlowConfirmarPedido: any) {
+        this.estructuraInfo.variables_flow_confirmar_pedido = variablesFlowConfirmarPedido;
+    }
+
+    public getVariablesFlowConfirmarPedido(): any {
+        return this.estructuraInfo.variables_flow_confirmar_pedido;
+    }
+
+    public getVariablesFlowPedido(): any {
+        return this.estructuraInfo.variables_flow_pedido;
+    }
+
+    public setVariablesFlowPedido(variablesFlowPedido: any) {
+        this.estructuraInfo.variables_flow_pedido = variablesFlowPedido;
+    }
+
+    public setInfoPedidoFromSql(infoPedido: any) {
+        this.estructuraInfo = infoPedido.estructuraInfo;
+    }
+    
 
     public setSede(sede: any) {
         this.estructuraInfo.sede = sede;
@@ -55,7 +99,7 @@ export class ClassInformacionPedido {
     }
 
     public getCliente(): ClassCliente {
-        return this.estructuraInfo.cliente;
+        return <ClassCliente>this.estructuraInfo.cliente;
     }
 
     public getSede(): any {
@@ -169,6 +213,46 @@ export class ClassInformacionPedido {
     public getDireccionGeolocalizada(): any {
         return this.estructuraInfo.direccionGeolocalizada;
     }
-    
+
+    // funcion que resetea la informacion del pedido menos la del cliente
+    public resetInfoPedido() {
+        this.estructuraInfo = {            
+            sede: this.estructuraInfo.sede,
+            cliente: this.estructuraInfo.cliente,
+            pedido_cliente: {},
+            subtotalCostoEntrega: null,
+            isDelivery: false,
+            isReserva: false,
+            isRecogeLocal: false,
+            isClienteRecogeLocal: false,
+            solicitaCubiertos: false,
+            canalConsumoSeleted: {},
+            metodoPagoSeleted: {},    
+            pedidoEnviar: {},
+            direccionGeolocalizada: {},
+            variables_flow_pedido: {
+                showTomarPedido: false,
+                platosNoEcontrados: [],
+                platosSinStock: [],
+                platosEcontrados: [],
+                platosRecomendados: [],
+                isWaitResponse: false,
+                isWaitConfirmar: false,
+                intentosEntederPedido: 0
+            },
+            variables_flow_confirmar_pedido: {
+                isRecopilandoDatos: false,
+                isClienteConfirmaDireccion: false,
+                isClienteEligeListDireccion: true,
+                isCuantoPagara: false,
+                preguntaSiEstaConformeOk: false,
+                datosRecopiladosDelCliente: {},
+                tipoPagoSeleted: {},
+                canalConsumoSeletedMasSeccion: {},  
+                _listDirecciones: []                           
+            }
+        };
+    }
+
 
 }

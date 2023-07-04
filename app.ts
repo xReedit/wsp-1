@@ -11,6 +11,7 @@ import socketsConnect  from './controllers/socket';
 // import 'dotenv/config'
 // import { config } from "dotenv"
 import * as dotenv from 'dotenv'
+import { SqliteDatabase } from './services/sqlite.services';
 dotenv.config();
 
 const PORT = process.env.PORT
@@ -39,7 +40,14 @@ const io = new Server(httpServer, {
     allowEIO3: true
 }).listen(parseInt(PORT_SOCKET_CHAT))
 
-socketsConnect(io)
+// crear data base clientes
+const database = new SqliteDatabase('database.sqlite');
+
+socketsConnect(io, database)
+
+
+
+
 // io.on('connection', (socket: any) => {
 //     console.log('datos socket', socket.id);
 

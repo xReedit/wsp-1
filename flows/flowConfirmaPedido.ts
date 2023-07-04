@@ -7,37 +7,46 @@ import { getClienteByCelular } from "../controllers/api.restobar";
 import { PROMPTS } from "../prompts/prompts";
 import { ClassEstructuraPedido } from "../clases/estructura.pedido.class";
 import { GeolocationServices } from "../services/geolocation.service";
+import { ClassInfoSede } from "../clases/sede";
+import { SqliteDatabase } from "../services/sqlite.services";
+import { info } from "console";
 
 
 // entra en accion cuando el cliente confirma el pedido
-export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
-    let infoCliente: ClassCliente = infoPedido.getCliente();
-    let listCanalesConsumo = infoPedido.getlistCanalConsumo()
-    let listTipoPago = infoPedido.getlistTipoPago()
-    const infoSede = infoPedido.getSede()
-    let tileAddAnswerDatosfaltantes = ''
-    let datosFaltantes = []
-    let canalConsumoSeleted = null
-    let datosRecopiladosDelCliente: any = {}    
-    let keyDatoFalta = ''
+export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteDatabase) => {
+    let _infoSede = infoSede.getSede()
+    let listCanalesConsumo = infoSede.getlistCanalConsumo()
+    let listTipoPago = infoSede.getlistTipoPago()
+
+    
+    // let listTipoPago = infoPedido.getlistTipoPago()
+    // const infoSede = infoPedido.getSede()
+    // let tileAddAnswerDatosfaltantes = ''
+    // let datosFaltantes = []
+    // let canalConsumoSeleted = null
+    // let datosRecopiladosDelCliente: any = {}    
+    // let keyDatoFalta = ''
+
+    
+    // let chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
+    // let isRecopilandoDatos = false
+    // let isClienteConfirmaDireccion = false
+    // let isClienteEligeListDireccion = false
+    // let isCuantoPagara = false
+    // let tipoPagoSeleted: any = {}
+    // let isCanalDelivery = false;
+    // let isCanalReserva = false;
+    // let preguntaSiDeseaCubiertos = false
+    // let _totalPagarMsj = ''
+    // let preguntaSiEstaConformeOk = false
+
 
     // configuramos el chatgpt
-    let chatGptConfirmaPedido: ChatGPT // = new ChatGPT('asistente', 'cliente')
-    // let chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
-    let isRecopilandoDatos = false
-    let isClienteConfirmaDireccion = false
-    let isClienteEligeListDireccion = false
-    let isCuantoPagara = false
-    let tipoPagoSeleted: any = {}
-    let pedidoEnviar = new ClassEstructuraPedido()
+    let chatGptConfirmaPedido: ChatGPT // = new ChatGPT('asistente', 'cliente')    
+    
     const geolocationServices = new GeolocationServices()
-    let isCanalDelivery = false;
-    let isCanalReserva = false;
-    let preguntaSiDeseaCubiertos = false
-    let _totalPagarMsj = ''
-    let preguntaSiEstaConformeOk = false
-    let _listDireccionesShow: any;
-    let _listDirecciones: any
+    // let _listDireccionesShow: any;
+    // let _listDirecciones: any
 
     // ordenar los canales de consumo por el nombre en orden alfabetico
     listCanalesConsumo = listCanalesConsumo.sort((a, b) => a.descripcion.localeCompare(b.descripcion));
@@ -65,27 +74,11 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         return `*${item.idshow}* Para ${capitalize(item.descripcion)}`
     })
 
-    // costo de entrega
-    let subtotalCostoEntrega: any
 
-    // si comparte ubicacion
-    // addKeyword(EVENTS.LOCATION).addAction(
-    //     async (ctx, fallBack) => {
-    //         if (isCanalDelivery) {
-    //             console.log('🤖 pruebaLocation', ctx);
-    //             const coordenadasCliente = `${ctx.message.locationMessage.degreesLatitude}, ${ctx.message.locationMessage.degreesLongitude}`
-    //             return await validarDireccion(coordenadasCliente, fallBack);
-    //         }
-    //     }
-    // )
-
-
-    return addKeyword(['confirmar', 'confirmo', 'confirmado', 'confirma', EVENTS.LOCATION, EVENTS.VOICE_NOTE])    
+    return addKeyword(['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm', EVENTS.LOCATION, EVENTS.VOICE_NOTE])    
     .addAction(
-        async () => {
-            // reset de variables
+        async () => {            
             try {                
-                datosRecopiladosDelCliente = {}
                 chatGptConfirmaPedido.clearConversationLog()
             } catch (error) {
                 
@@ -98,6 +91,16 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         ],
         {capture: true},
         async (ctx, { endFlow, flowDynamic, provider, fallBack }) => {
+
+            let infoPedido = new ClassInformacionPedido()
+            infoPedido = await database.getInfoPedido(ctx.from)
+            // get variables
+            let infoFlowConfirma = infoPedido.getVariablesFlowConfirmarPedido()
+            
+            const _infoCliente = infoPedido.getCliente();            
+            let infoCliente = new ClassCliente()
+            infoCliente.setCliente(_infoCliente)               
+            // infoPedido.setSede(infoSede)
 
             // escribiendo
             const jid = ctx.key.remoteJid
@@ -118,36 +121,43 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                 userResponse = text
             }
 
-            if (preguntaSiEstaConformeOk) {
+            if (infoFlowConfirma.preguntaSiEstaConformeOk) {
                 if (userResponse.includes('ok')) {
-                    enviarPedido()
-                    chatGptConfirmaPedido.clearConversationLog()
+                    enviarPedido(infoCliente, infoPedido)
+
+                    try {
+                        chatGptConfirmaPedido.clearConversationLog()                        
+                    } catch (error) {                        
+                    }
+
+                    guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                     return await endFlow('Listo 🤙 *Pedido confirmado*') // enviar pedido
                 }
             }
 
             // recolectando datos del cliente
-            if (isRecopilandoDatos) {
+            if (infoFlowConfirma.isRecopilandoDatos) {
 
                 if (infoPedido.getIsDelivery()){
                     
-                    if (isClienteConfirmaDireccion) {
+                    if (infoFlowConfirma.isClienteConfirmaDireccion) {
                         if (userResponse.includes('si')) {
                             const _direccion = infoCliente.getDirecciones()[0]
-                            await setearDireccionSeleccionada(_direccion, true)
-                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic)
+                            await setearDireccionSeleccionada(_direccion, infoCliente, infoPedido, infoFlowConfirma, true)
+                            console.log('ingresa aca verificarDatosFaltantesDelCliente 139');
+
+                            // guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
+                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from) 
                         }
                     }
 
-                    if ( isClienteEligeListDireccion ) {
-                        // obtenemos la direccion que eligio el cliente segun el idshow de la lista _listDireccionesShow
-                        const _idShowDireccionElegido = userResponse
-                        // console.log('_listDirecciones', _listDirecciones);
-                        const _direccionElegida = _listDirecciones.find((item: any) => item.idshow === parseInt(_idShowDireccionElegido))   
-                        // console.log('_direccionElegida', _direccionElegida);
+                    if ( infoFlowConfirma.isClienteEligeListDireccion ) {                        
+                        const _idShowDireccionElegido = userResponse                        
+                        const _direccionElegida = infoFlowConfirma._listDirecciones.find((item: any) => item.idshow === parseInt(_idShowDireccionElegido))                           
                         if (_direccionElegida) {
-                            await setearDireccionSeleccionada(_direccionElegida, true)
-                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic)
+                            await setearDireccionSeleccionada(_direccionElegida, infoCliente, infoPedido, infoFlowConfirma, true)
+                            console.log('ingresa aca verificarDatosFaltantesDelCliente 152');
+                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from)
                         } 
 
 
@@ -156,27 +166,13 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                     // si envia su localizacion                  
                     if (userResponse.includes('_event_location') ) {
                         const coordenadasCliente = `${ctx.message.locationMessage.degreesLatitude}, ${ctx.message.locationMessage.degreesLongitude}`                    
-                        const rptCoordenadas = await getDireccionFromCoordenadas(coordenadasCliente);                    
+                        const rptCoordenadas = await getDireccionFromCoordenadas(coordenadasCliente, infoPedido);                    
                         if (rptCoordenadas) {
                             // seteo la direccion del cliente
-                            await setearDireccionSeleccionada(rptCoordenadas);
-                            // infoCliente.setDireccionSelected(rptCoordenadas.direccion)
-                            // infoCliente.setReferenciaDireccion('coordenadas')
-                            // infoPedido.setCliente(infoCliente)
-                            // datosRecopiladosDelCliente.direccion = rptCoordenadas.direccion                        
-                            // chatGptConfirmaPedido.setRowConversationLog(`cliente=mi direccion es: ${datosRecopiladosDelCliente.direccion}.`)                            
-    
-                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic)
-                            // console.log('datosRecopiladosDelCliente', datosRecopiladosDelCliente);
-    
-                            // datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)
-                            // if (datosFaltantes.length > 0) {
-                            //     chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
-                            //     return await fallBack(`Datos faltantes: ${datosFaltantes.join(', ')}.`)
-                            // } else {
-                            //     // enviamos el total a pagar
-                            //     return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic)
-                            // }
+                            await setearDireccionSeleccionada(rptCoordenadas, infoCliente, infoPedido, infoFlowConfirma);
+                            console.log('llama desde aca verificarDatosFaltantesDelCliente 166');
+                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from)
+
                         }
                     }
                 }
@@ -192,67 +188,71 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                 if (!isRptJson) {
                     return await fallBack(modelResponse);
                 } else {
-                    datosRecopiladosDelCliente = modelResponse.split('respuesta=')[1]
-                    // console.log('respuesta completa = ', datosRecopiladosDelCliente);
-                    datosRecopiladosDelCliente = JSON.parse(datosRecopiladosDelCliente)
-                    await setearDireccionSeleccionada(datosRecopiladosDelCliente);
-                    // infoCliente.setDireccionSelected(datosRecopiladosDelCliente.direccion)
-                    // infoCliente.setReferenciaDireccion(datosRecopiladosDelCliente.referencia_de_la_direccion)
+                    let _datosRecopiladosDelCliente = modelResponse.split('respuesta=')[1]
+                    console.log('respuesta completa = ', _datosRecopiladosDelCliente);
+                    const _datosRecopiladosDelClienteJSON = JSON.parse(_datosRecopiladosDelCliente)
+                    infoFlowConfirma.datosRecopiladosDelCliente = _datosRecopiladosDelClienteJSON                    
 
-                    infoCliente.setNombrePila(datosRecopiladosDelCliente.nombre)
-                    infoCliente.setNombre(datosRecopiladosDelCliente.nombre)
-                    infoCliente.setCelular(datosRecopiladosDelCliente.telefono)
+                    infoCliente.setNombrePila(_datosRecopiladosDelClienteJSON.nombre)
+                    infoCliente.setNombre(_datosRecopiladosDelClienteJSON.nombre)
+                    infoCliente.setCelular(_datosRecopiladosDelClienteJSON.telefono)
                     infoPedido.setCliente(infoCliente)
 
-                    isCanalDelivery = infoPedido.getIsDelivery();
-                    isCanalReserva = infoPedido.getIsReserva();
+                    // isCanalDelivery = infoPedido.getIsDelivery();
+                    // isCanalReserva = infoPedido.getIsReserva();
 
-                    if (isCanalReserva) {
-                        infoCliente.setNumPersonas(datosRecopiladosDelCliente.numero_de_personas)
-                        infoCliente.setHoraLlegada(datosRecopiladosDelCliente.hora_llegada)
+                    if (infoPedido.getIsReserva()) {
+                        infoCliente.setNumPersonas(_datosRecopiladosDelClienteJSON.numero_de_personas)
+                        infoCliente.setHoraLlegada(_datosRecopiladosDelClienteJSON.hora_llegada)
                     }
+
+                    guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                                         
 
                     // validamos direccion
-                    if (isCanalDelivery) {
+                    if (infoPedido.getIsDelivery()) {
                         
-                        const _confgDelivery = infoPedido.getConfigDelivery()                        
-                        // console.log('datosRecopiladosDelCliente.direccion --1', datosRecopiladosDelCliente);
-                        let direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(datosRecopiladosDelCliente.direccion, _confgDelivery.ciudades)
-                        // console.log('direccionClienteSeletedCoordenadas', direccionClienteSeletedCoordenadas);
+                        await setearDireccionSeleccionada(_datosRecopiladosDelClienteJSON, infoCliente, infoPedido, infoFlowConfirma);
+
+                        const _confgDelivery = infoPedido.getConfigDelivery()                                                
+                        let direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(_datosRecopiladosDelClienteJSON.direccion, _confgDelivery.ciudades)                        
 
                         if (!direccionClienteSeletedCoordenadas ) {
                             const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida.'
                             chatGptConfirmaPedido.setRowConversationLog(`asisente=${_rptMsj}`) 
+                            
+                            guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                             return await fallBack(_rptMsj)
                         }
                         
                         // seteamos la direccion geolocalizada
-                        direccionClienteSeletedCoordenadas.referencia = datosRecopiladosDelCliente.referencia_de_la_direccion
+                        direccionClienteSeletedCoordenadas.referencia = _datosRecopiladosDelClienteJSON.referencia_de_la_direccion
                         infoPedido.setDireccionGeolocalizada(direccionClienteSeletedCoordenadas)
 
 
-                        const coordenadas_origen = `${infoSede.latitude}, ${infoSede.longitude}`                        
+                        const coordenadas_origen = `${_infoSede.latitude}, ${_infoSede.longitude}`                        
                         const coordenadas_destino = `${direccionClienteSeletedCoordenadas.latitude}, ${direccionClienteSeletedCoordenadas.longitude}`
-                        subtotalCostoEntrega = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)                        
+                        const subtotalCostoEntrega: any = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)                        
                         // console.log('subtotalCostoEntrega ============= ', subtotalCostoEntrega);
                         if (subtotalCostoEntrega.success ) {
                             infoPedido.setSubtotalCostoEntrega(subtotalCostoEntrega)
                         } else {
                             chatGptConfirmaPedido.setRowConversationLog(`asisente=${subtotalCostoEntrega.mensaje}`)
+
+                            guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                             return await fallBack(subtotalCostoEntrega.mensaje)
                         }
 
                     }
                     
                     // enviamos el total a pagar
-                    return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic)
+                    return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic, infoCliente, infoPedido, infoFlowConfirma, ctx.from)  
                 }  
                 
             }
 
             const _idCanalConsumo = ctx.body.toLowerCase().trim()                        
-            canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.idshow === parseInt(_idCanalConsumo))                        
+            let canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.idshow === parseInt(_idCanalConsumo))                        
 
 
             if (!canalConsumoSeleted) {
@@ -260,19 +260,22 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
             }
 
             // solicitar datos segun canal de consumo
-            datosRecopiladosDelCliente = datosSolicitarSegunCanal(canalConsumoSeleted.idshow)
+            let datosRecopiladosDelCliente = datosSolicitarSegunCanal(canalConsumoSeleted.idshow)            
             datosRecopiladosDelCliente.telefono = infoCliente.getCelular()
             datosRecopiladosDelCliente.nombre = infoCliente.getNombrePila()            
 
             // console.log('datosRecopiladosDelCliente', datosRecopiladosDelCliente);
 
             canalConsumoSeleted.secciones = infoPedido.getPedidoCliente();
-            pedidoEnviar.setTipoConsumo(canalConsumoSeleted)            
-            setTipoCanalConsumoSeleted(canalConsumoSeleted)
+            infoFlowConfirma.canalConsumoSeletedMasSeccion = canalConsumoSeleted
             
-            datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)            
+            // pedidoEnviar.setTipoConsumo(canalConsumoSeleted) // quitar 
+            setTipoCanalConsumoSeleted(canalConsumoSeleted, infoPedido)
+                        
+            const datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)            
+            
 
-            
+            let tileAddAnswerDatosfaltantes = ''
 
             // si faltan datos por recopilar
             if (datosFaltantes.length > 0) {       
@@ -286,11 +289,12 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                 _prompt = _prompt.replace('{canal_consumo}', canalConsumoSeleted.descripcion)
 
                 chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
-                const _rptChatGpt = await chatGptConfirmaPedido.sendPrompt(_prompt)
-                chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
-                // console.log('_rptChatGpt', _rptChatGpt);
 
-                isRecopilandoDatos = true;
+                // envio el promt
+                await chatGptConfirmaPedido.sendPrompt(_prompt)
+                chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)                
+
+                infoFlowConfirma.isRecopilandoDatos = true;
 
 
                 // si es delivery verifica si ya tiene una direccion registrada
@@ -298,7 +302,9 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                     if (infoCliente.getIsDireccionRegistrada()) {
                         // si hay varias direcciones debe seleccionar una, y si solo hay una debe confirmarla
                         
-                        _listDirecciones = infoCliente.getDirecciones()
+                        let _listDireccionesShow: any;
+                        let _listDirecciones = infoCliente.getDirecciones()
+                        infoFlowConfirma._listDirecciones = _listDirecciones
                         // console.log('_listDirecciones', _listDirecciones);
                         if (_listDirecciones.length > 1) {
                             // si hay varias direcciones debe seleccionar una
@@ -307,6 +313,8 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                                 item.idshow = _idShow 
                                 return item
                             })
+
+                            infoFlowConfirma._listDirecciones = _listDirecciones
 
                             _listDireccionesShow = _listDirecciones.map((item: any, index) => {
                                 const _idShow = item.idshow
@@ -317,25 +325,26 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
                             // le ofrecemos seleccionar una opcion
                             tileAddAnswerDatosfaltantes = `Tenemos registrado las siguientes direcciones:\n${_listDireccionesShow.join('\n')}\n\nEscriba el numero de la direccion que desea seleccionar.`
-                            isClienteEligeListDireccion = true;
+                            infoFlowConfirma.isClienteEligeListDireccion = true;
 
                         } else {
                             // si solo hay una debe confirmarla
                             _listDireccionesShow = _listDirecciones[0]
                             tileAddAnswerDatosfaltantes = `Tenemos registrado la siguiente direccion:\n*${_listDireccionesShow.direccion.split(',')[0]}*\n\nSe la enviamos a esta direccion? escriba: *si* o *no*`
-                            isClienteConfirmaDireccion = true;
+                            infoFlowConfirma.isClienteConfirmaDireccion = true;
                         }  
                         
                         chatGptConfirmaPedido.setRowConversationLog(`asistente=${tileAddAnswerDatosfaltantes}`)
                     }
                 }
 
+                guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                 delay(1000)
                 return await fallBack(tileAddAnswerDatosfaltantes) 
             } else {
                 // // si no faltan datos
                 // enviamos el total a pagar
-                return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic)                
+                return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic, infoCliente, infoPedido, infoFlowConfirma, ctx.from)                
             }
 
                        
@@ -347,6 +356,21 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         ]
         , { capture: true }
         , async (ctx, { endFlow, flowDynamic, provider, fallBack, gotoFlow }) => {
+
+            let infoPedido = new ClassInformacionPedido()
+            infoPedido = await database.getInfoPedido(ctx.from)
+            // get variables
+            let infoFlowConfirma = infoPedido.getVariablesFlowConfirmarPedido()
+            
+            const _infoCliente = infoPedido.getCliente();
+            console.log('_infoCliente _infoCliente', _infoCliente);
+            let infoCliente = new ClassCliente()
+            infoCliente.setCliente(_infoCliente)  
+            console.log('infoCliente == 1', infoCliente )
+            console.log('infoCliente == iddireccion', infoCliente.getIdClientePwaDireccion());
+
+            // let infoCliente: ClassCliente = infoPedido.getCliente();
+
             let userResponse = ctx.body.toLowerCase().trim()
 
 
@@ -359,53 +383,70 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
                 userResponse = text
             }
 
-            if (preguntaSiDeseaCubiertos ) {
-                preguntaSiDeseaCubiertos = userResponse.toLowerCase().includes('si') ? true : false
-                infoPedido.setSolicitaCubiertos(preguntaSiDeseaCubiertos)
+            if (infoFlowConfirma.preguntaSiDeseaCubiertos ) {
+                const _preguntaSiDeseaCubiertos = userResponse.toLowerCase().includes('si') ? true : false
+                infoPedido.setSolicitaCubiertos(_preguntaSiDeseaCubiertos)
                    
-                enviarPedido()
-                chatGptConfirmaPedido.clearConversationLog()
-                return await endFlow('Listo 🤙 *Pedido confirmado*') // enviar pedido
+                guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
+                enviarPedido(infoCliente, infoPedido)
+
+                try {
+                    chatGptConfirmaPedido.clearConversationLog()                    
+                } catch (error) {                    
+                }
+
+                
+                return await endFlow('Listo 🤙 *Pedido confirmado*') // final enviar pedido
             }
 
 
-            if (isCuantoPagara ) {
-                tipoPagoSeleted.descripcion = `${tipoPagoSeleted.descripcion} ${userResponse}` 
+            if (infoFlowConfirma.isCuantoPagara ) {
+                const _tipoPagoSeleted = infoFlowConfirma.tipoPagoSeleted
+                infoFlowConfirma.tipoPagoSeleted.descripcion = `${_tipoPagoSeleted.descripcion} ${userResponse}`
 
                 // pregunta si desea cubiertos
                 if (infoPedido.getIsDelivery()) {
-                    preguntaSiDeseaCubiertos = true
+                    infoFlowConfirma.preguntaSiDeseaCubiertos = true
+
+                    guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                     return await fallBack('¿Desea cubiertos?')
                 } else {         
-                    enviarPedido()           
+
+                    guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
+                    enviarPedido(infoCliente, infoPedido)           
                     return endFlow('Listo 🤙 *Pedido confirmado*') // enviar pedido
                 }
             }
 
             const _idTipoPago = ctx.body.toLowerCase().trim()
-            tipoPagoSeleted = listTipoPago.find((item: any) => item.idshow === parseInt(_idTipoPago))
+            const _tipoPagoSeleted = listTipoPago.find((item: any) => item.idshow === parseInt(_idTipoPago))
             // console.log('_tipoPago', tipoPagoSeleted);
 
-            if (!tipoPagoSeleted) {
+            if (!_tipoPagoSeleted) {
                 return fallBack('Escriba un numero valido, para seleccionar el tipo de pago')
             }
 
-            infoPedido.setMetodoPagoSeleted(tipoPagoSeleted)
+            infoPedido.setMetodoPagoSeleted(_tipoPagoSeleted)
 
             if (_idTipoPago === '1' ) {
-                isCuantoPagara = true;
+                infoFlowConfirma.isCuantoPagara = true;
+
+                guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                 return fallBack('💵 Con cuanto pagara?')
             }    
 
-            isCuantoPagara = false;
+            infoFlowConfirma.isCuantoPagara = false;
             
             // pregunta si desea cubiertos
             if (infoPedido.getIsDelivery()) {
-                preguntaSiDeseaCubiertos = true
+                infoFlowConfirma.preguntaSiDeseaCubiertos = true
+
+                guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                 return await fallBack('¿Desea cubiertos?')
 
             } else {
-                enviarPedido()
+                guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
+                enviarPedido(infoCliente, infoPedido)
                 return endFlow('Listo 🤙 *Pedido confirmado*') // enviar pedido
             }
         
@@ -416,7 +457,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
     // solicitar datos al cliente segun el canal de consumo
     function datosSolicitarSegunCanal(idshow) {
-        datosRecopiladosDelCliente = {}
+        // datosRecopiladosDelCliente = {}
         const _datosCliente = [
             { //delivery                 
                 "nombre": "",
@@ -440,23 +481,40 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
     }    
 
-    function obtenerTotalPagar() {
-        const totalPagar = armarPedido()
+    function obtenerTotalPagar(infoCliente: ClassCliente, infoPedido: ClassInformacionPedido) {
+        const totalPagar = armarPedidoGetImportePagar(infoCliente, infoPedido)
         return `El costo total del pedido es: *S/.${totalPagar}*`
     }
 
     // aca mandamos a armar la estructura del pedido
-    function armarPedido() {
-        return pedidoEnviar.armarPedido(infoPedido, infoCliente)
+    function armarPedidoGetImportePagar(infoCliente: ClassCliente, infoPedido: ClassInformacionPedido) {
+
+        // importe a pagar
+        let pedidoEnviar = new ClassEstructuraPedido()
+
+        const _infoFlowConfirma = infoPedido.getVariablesFlowConfirmarPedido()
+        const canalConsumoSeleted = _infoFlowConfirma.canalConsumoSeletedMasSeccion
+        pedidoEnviar.setTipoConsumo(canalConsumoSeleted) 
+
+        return pedidoEnviar.armarPedido(infoSede, infoPedido, infoCliente)
     }
 
-    function enviarPedido() {
-        pedidoEnviar.armarPedido(infoPedido, infoCliente)
-        pedidoEnviar.enviarPedido(infoPedido)
-        chatGptConfirmaPedido.clearConversationLog()
+    function enviarPedido(infoCliente: ClassCliente , infoPedido: ClassInformacionPedido) {
+        let pedidoEnviar = new ClassEstructuraPedido()
+        const _infoFlowConfirma = infoPedido.getVariablesFlowConfirmarPedido()
+        const canalConsumoSeleted = _infoFlowConfirma.canalConsumoSeletedMasSeccion
+        pedidoEnviar.setTipoConsumo(canalConsumoSeleted) 
+
+        pedidoEnviar.armarPedido(infoSede, infoPedido, infoCliente)
+        pedidoEnviar.enviarPedido(_infoSede, infoPedido, infoCliente)
+
+        try {            
+            chatGptConfirmaPedido.clearConversationLog()
+        } catch (error) {            
+        }
     }
 
-    function setTipoCanalConsumoSeleted(canalConsumoSeleted: any) {
+    function setTipoCanalConsumoSeleted(canalConsumoSeleted: any, infoPedido: ClassInformacionPedido) {
         // segun el idshow del canal de consumo seleccionado
         switch (canalConsumoSeleted.idshow) {
             case 1: // delivery
@@ -473,10 +531,10 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         infoPedido.setCanalConsumoSeleted(canalConsumoSeleted)
     }
 
-    function rptFinalSegunCanalConsumo(costoPedido: string) {
+    function rptFinalSegunCanalConsumo(costoPedido: string, infoPedido: ClassInformacionPedido) {
         // si es para llevar
         if ( infoPedido.getIsRecogeLocal() ) {
-            let tiempoRecoger = infoSede.pwa_min_despacho
+            let tiempoRecoger = _infoSede.pwa_min_despacho
             tiempoRecoger = tiempoRecoger >= 8 ? tiempoRecoger : tiempoRecoger * 2
             return `${costoPedido}\n*Nota:* El pedido estará listo en aproximadamente ${tiempoRecoger} minutos.\n\nSi esta de acuerdo responda *Ok* para enviar su pedido.`
         }
@@ -490,24 +548,28 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
 
     }
 
-    async function pasarFlowSegunCanalConsumo(fallBack, flowDynamic) {
+    async function pasarFlowSegunCanalConsumo(fallBack, flowDynamic, infoCliente:ClassCliente, infoPedido, infoFlowConfirma, ctxFrom) {
 
-        _totalPagarMsj = obtenerTotalPagar()
+        const _totalPagarMsj = obtenerTotalPagar(infoCliente, infoPedido)
 
         if (infoPedido.getIsDelivery()) {
+            guadarInfoDataBase(infoPedido, infoFlowConfirma, ctxFrom)
             return await flowDynamic(_totalPagarMsj)
         }
 
         if (infoPedido.getIsRecogeLocal() || infoPedido.getIsReserva()) {            
-            preguntaSiEstaConformeOk = true            
-            const _rptFinal = rptFinalSegunCanalConsumo(_totalPagarMsj)
+            infoFlowConfirma.preguntaSiEstaConformeOk = true
+            const _rptFinal = rptFinalSegunCanalConsumo(_totalPagarMsj, infoPedido)
+
+            guadarInfoDataBase(infoPedido, infoFlowConfirma, ctxFrom)
             return await fallBack(_rptFinal)
         }
 
     }
 
-    async function validarDireccion(direccionOCoordenadasCliente:any) {
-        const _confgDelivery = infoPedido.getConfigDelivery()        
+    async function validarDireccion(direccionOCoordenadasCliente: any, datosRecopiladosDelCliente, infoPedido: ClassInformacionPedido) {
+        const _confgDelivery = infoSede.getConfigDelivery()        
+        console.log('_confgDelivery', _confgDelivery);
         let direccionClienteSeletedCoordenadas: any = {}
         let msjReturn=''
 
@@ -538,9 +600,9 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         direccionClienteSeletedCoordenadas.referencia = datosRecopiladosDelCliente.referencia_de_la_direccion
         infoPedido.setDireccionGeolocalizada(direccionClienteSeletedCoordenadas)
 
-        const coordenadas_origen = `${infoSede.latitude}, ${infoSede.longitude}`
+        const coordenadas_origen = `${_infoSede.latitude}, ${_infoSede.longitude}`
         const coordenadas_destino = `${direccionClienteSeletedCoordenadas.latitude}, ${direccionClienteSeletedCoordenadas.longitude}`
-        subtotalCostoEntrega = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)
+        const subtotalCostoEntrega: any = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)
         if (subtotalCostoEntrega.success) {
             infoPedido.setSubtotalCostoEntrega(subtotalCostoEntrega)
             msjReturn = 'ok'
@@ -553,7 +615,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         return msjReturn;
     }
 
-    async function getDireccionFromCoordenadas(coordenadas: string) {
+    async function getDireccionFromCoordenadas(coordenadas: string, infoPedido: ClassInformacionPedido) {
         // const geolocationServices = new GeolocationServices()
         // console.log('coordenadas -- 3', coordenadas);
         const direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(coordenadas, infoPedido.getConfigDelivery().ciudades)
@@ -561,7 +623,7 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
     }
 
     // se espera {direccion, referencia}
-    async function setearDireccionSeleccionada(datosRecopilados:any, isDireccionRegistrada = false){
+    async function setearDireccionSeleccionada(datosRecopilados: any, infoCliente: ClassCliente, infoPedido: ClassInformacionPedido, infoFlowConfirma, isDireccionRegistrada = false){
         // console.log('direccionElegida -- ', datosRecopilados);
         let direccionSelected = isDireccionRegistrada ? datosRecopilados.direccion : datosRecopilados
         let referenciaDireccionSelected = datosRecopilados.referencia
@@ -584,8 +646,8 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
             }            
         }
 
-        datosRecopiladosDelCliente.direccion = direccionSelected.direccion  
-        datosRecopiladosDelCliente.referencia_de_la_direccion = referenciaDireccionSelected
+        infoFlowConfirma.datosRecopiladosDelCliente.direccion = direccionSelected.direccion
+        infoFlowConfirma.datosRecopiladosDelCliente.referencia_de_la_direccion = referenciaDireccionSelected
         
         infoCliente.setDireccionSelected(direccionSelected)
         infoCliente.setReferenciaDireccion(referenciaDireccionSelected)
@@ -598,9 +660,12 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
         // }
     }
 
-    async function verificarDatosFaltantesDelCliente(fallBack, flowDynamic) {
+    async function verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente: ClassCliente, ctxFrom) {
         // console.log('datosRecopiladosDelCliente - ', datosRecopiladosDelCliente);
-        datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)
+        const datosRecopiladosDelCliente = infoFlowConfirma.datosRecopiladosDelCliente
+        const datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)
+        console.log('datosFaltantes', datosFaltantes);
+
         if (datosFaltantes.length > 0) {
             chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
             return await fallBack(`Datos faltantes: ${datosFaltantes.join(', ')}.`)
@@ -609,16 +674,24 @@ export const flowConfirmaPedido = (infoPedido: ClassInformacionPedido) => {
             // antes de pasar debo verificar la direccion si es delivery
             if (infoPedido.getIsDelivery()) {
                 const _direccion = infoCliente.getDireccionSelected()
-                const _rptDireccion = await validarDireccion(_direccion)
+                const _rptDireccion = await validarDireccion(_direccion, datosRecopiladosDelCliente, infoPedido)
                 if (_rptDireccion === 'ok') {
-                    return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic)
+                    return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic, infoCliente, infoPedido, infoFlowConfirma, ctxFrom)
                 } else {
+
+                    guadarInfoDataBase(infoPedido, infoFlowConfirma, ctxFrom)   
                     return await fallBack(_rptDireccion)
                 }
             }
 
-            return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic)
+            return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic, infoCliente, infoPedido, infoFlowConfirma, ctxFrom)
         }
+    }
+
+    function guadarInfoDataBase(infoPedido: ClassInformacionPedido, infoFlowConfirma, ctxFrom) {
+        // guardamos en database
+        infoPedido.setVariablesFlowPedido(infoFlowConfirma)
+        database.update(ctxFrom, infoPedido)
     }
 
 

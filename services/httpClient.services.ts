@@ -39,7 +39,7 @@ export const getData = async (controller: string, event: string, payload: any = 
     // }
 
     // console.log('controller', controller);
-    // console.log('event', event);
+    // console.log('event', event);    
     console.log('url', url);
     // try {
     //     const response = await axios.get(url);

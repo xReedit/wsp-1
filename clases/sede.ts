@@ -1,47 +1,48 @@
 // clase sede - informacion de la sede, horarios de atencion, canales de consumo
-export class ClassSede {
-    private idsede: number;
-    private infoSede: any;
-    private listCarta: any;
-    private listCanalConsumo: any;
+export class ClassInfoSede {
+    private sede: any;
 
-    constructor(idsede: number, infoSede: any, listCarta: any, listCanalConsumo: any) {
-        this.idsede = idsede;
-        this.infoSede = infoSede;
-        this.listCarta = listCarta;
-        this.listCanalConsumo = listCanalConsumo;
+    constructor(sede: any) {
+        this.sede = sede;
     }
 
-    public getIdSede(): number {
-        return this.idsede;
+
+    public setSede(sede: any) {
+        this.sede = sede;
     }
 
-    public setIdSede(idsede: number): void {
-        this.idsede = idsede;
+    public getSede(): any {
+        return this.sede.sede;
     }
 
-    public getinfoSede(): any {
-        return this.infoSede;
+    public getHorariosAtencion(): any {
+        return this.sede.listHorariosAtencion;
     }
 
-    public setinfoSede(infoSede: any): void {
-        this.infoSede = infoSede;
+    public getlistCanalConsumo(): any {
+        return this.sede.listCanalConsumo;
     }
 
-    public getListCarta(): any {
-        return this.listCarta;
+    public getlistTipoPago(): any {
+        return this.sede.listTipoPago;
     }
 
-    public setListCarta(listCarta: any): void {
-        this.listCarta = listCarta;
+    public getlistImpresoras(): any {
+        return this.sede.listImpresoras;
     }
 
-    public getListCanalConsumo(): any {
-        return this.listCanalConsumo;
+    public getConfigDelivery(): any {
+        return this.sede.configDelivery;
     }
 
-    public setListCanalConsumo(listCanalConsumo: any): void {
-        this.listCanalConsumo = listCanalConsumo;
-    }    
+    public getListReglasCarta() {
+        return this.sede.listReglasCarta;
+    }  
+
+    public getSeccionMasItems() {
+        return this.sede.listSeccionMasPiden;
+    }
+    
+
 
 }
