@@ -42,7 +42,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
 
 
     // configuramos el chatgpt
-    let chatGptConfirmaPedido: ChatGPT // = new ChatGPT('asistente', 'cliente')    
+    // let chatGptConfirmaPedido: ChatGPT // = new ChatGPT('asistente', 'cliente')    
     
     const geolocationServices = new GeolocationServices()
     // let _listDireccionesShow: any;
@@ -78,11 +78,11 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
     return addKeyword(['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm', EVENTS.LOCATION, EVENTS.VOICE_NOTE])    
     .addAction(
         async () => {            
-            try {                
-                chatGptConfirmaPedido.clearConversationLog()
-            } catch (error) {
+            // try {                
+            //     chatGptConfirmaPedido.clearConversationLog()
+            // } catch (error) {
                 
-            }
+            // }
         }
     )
     .addAnswer([
@@ -111,6 +111,9 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
             // enviamos la respuesta del usuario
             let userResponse = ctx.body.toLowerCase().trim()
 
+            // get instacia chatgpt
+            // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
+            let chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente', infoPedido)
             
             // si es mensaje de voz
             if (userResponse.includes('event_voice')) {
@@ -143,11 +146,11 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                     if (infoFlowConfirma.isClienteConfirmaDireccion) {
                         if (userResponse.includes('si')) {
                             const _direccion = infoCliente.getDirecciones()[0]
-                            await setearDireccionSeleccionada(_direccion, infoCliente, infoPedido, infoFlowConfirma, true)
-                            console.log('ingresa aca verificarDatosFaltantesDelCliente 139');
+                            await setearDireccionSeleccionada(_direccion, infoCliente, infoPedido, infoFlowConfirma, chatGptConfirmaPedido, true)
+                            // console.log('ingresa aca verificarDatosFaltantesDelCliente 139');
 
                             // guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
-                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from) 
+                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from, chatGptConfirmaPedido) 
                         }
                     }
 
@@ -155,9 +158,9 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                         const _idShowDireccionElegido = userResponse                        
                         const _direccionElegida = infoFlowConfirma._listDirecciones.find((item: any) => item.idshow === parseInt(_idShowDireccionElegido))                           
                         if (_direccionElegida) {
-                            await setearDireccionSeleccionada(_direccionElegida, infoCliente, infoPedido, infoFlowConfirma, true)
+                            await setearDireccionSeleccionada(_direccionElegida, infoCliente, infoPedido, infoFlowConfirma, chatGptConfirmaPedido, true)
                             console.log('ingresa aca verificarDatosFaltantesDelCliente 152');
-                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from)
+                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from, chatGptConfirmaPedido)
                         } 
 
 
@@ -169,9 +172,9 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                         const rptCoordenadas = await getDireccionFromCoordenadas(coordenadasCliente, infoPedido);                    
                         if (rptCoordenadas) {
                             // seteo la direccion del cliente
-                            await setearDireccionSeleccionada(rptCoordenadas, infoCliente, infoPedido, infoFlowConfirma);
-                            console.log('llama desde aca verificarDatosFaltantesDelCliente 166');
-                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from)
+                            await setearDireccionSeleccionada(rptCoordenadas, infoCliente, infoPedido, infoFlowConfirma, chatGptConfirmaPedido);
+                            // console.log('llama desde aca verificarDatosFaltantesDelCliente 166');
+                            return await verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente, ctx.from, chatGptConfirmaPedido)
 
                         }
                     }
@@ -212,7 +215,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                     // validamos direccion
                     if (infoPedido.getIsDelivery()) {
                         
-                        await setearDireccionSeleccionada(_datosRecopiladosDelClienteJSON, infoCliente, infoPedido, infoFlowConfirma);
+                        await setearDireccionSeleccionada(_datosRecopiladosDelClienteJSON, infoCliente, infoPedido, infoFlowConfirma, chatGptConfirmaPedido);
 
                         const _confgDelivery = infoPedido.getConfigDelivery()                                                
                         let direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(_datosRecopiladosDelClienteJSON.direccion, _confgDelivery.ciudades)                        
@@ -288,11 +291,12 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                 // canal de consumo
                 _prompt = _prompt.replace('{canal_consumo}', canalConsumoSeleted.descripcion)
 
-                chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
+                // chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente', infoPedido)
+                // infoPedido.setInstanceChatGpt(chatGptConfirmaPedido)
 
                 // envio el promt
                 await chatGptConfirmaPedido.sendPrompt(_prompt)
-                chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)                
+                chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
 
                 infoFlowConfirma.isRecopilandoDatos = true;
 
@@ -390,10 +394,10 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                 guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
                 enviarPedido(infoCliente, infoPedido)
 
-                try {
-                    chatGptConfirmaPedido.clearConversationLog()                    
-                } catch (error) {                    
-                }
+                // try {
+                //     chatGptConfirmaPedido.clearConversationLog()                    
+                // } catch (error) {                    
+                // }
 
                 
                 return await endFlow('Listo 🤙 *Pedido confirmado*') // final enviar pedido
@@ -508,10 +512,11 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
         pedidoEnviar.armarPedido(infoSede, infoPedido, infoCliente)
         pedidoEnviar.enviarPedido(_infoSede, infoPedido, infoCliente)
 
-        try {            
-            chatGptConfirmaPedido.clearConversationLog()
-        } catch (error) {            
-        }
+        // try {     
+        //     let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
+        //     chatGptConfirmaPedido.clearConversationLog()
+        // } catch (error) {            
+        // }
     }
 
     function setTipoCanalConsumoSeleted(canalConsumoSeleted: any, infoPedido: ClassInformacionPedido) {
@@ -567,7 +572,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
 
     }
 
-    async function validarDireccion(direccionOCoordenadasCliente: any, datosRecopiladosDelCliente, infoPedido: ClassInformacionPedido) {
+    async function validarDireccion(direccionOCoordenadasCliente: any, datosRecopiladosDelCliente, infoPedido: ClassInformacionPedido, chatGptConfirmaPedido) {
         const _confgDelivery = infoSede.getConfigDelivery()        
         console.log('_confgDelivery', _confgDelivery);
         let direccionClienteSeletedCoordenadas: any = {}
@@ -590,6 +595,8 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
         // console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
         if (!direccionClienteSeletedCoordenadas) {
             const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida.'
+            
+            // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
             chatGptConfirmaPedido.setRowConversationLog(`asisente=${_rptMsj}`)
             // return await fallBack(_rptMsj)
             msjReturn = _rptMsj
@@ -607,6 +614,8 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
             infoPedido.setSubtotalCostoEntrega(subtotalCostoEntrega)
             msjReturn = 'ok'
         } else {
+
+            // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
             chatGptConfirmaPedido.setRowConversationLog(`asisente=${subtotalCostoEntrega.mensaje}`)
             msjReturn = subtotalCostoEntrega.mensaje
             // return await fallBack(subtotalCostoEntrega.mensaje)
@@ -623,7 +632,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
     }
 
     // se espera {direccion, referencia}
-    async function setearDireccionSeleccionada(datosRecopilados: any, infoCliente: ClassCliente, infoPedido: ClassInformacionPedido, infoFlowConfirma, isDireccionRegistrada = false){
+    async function setearDireccionSeleccionada(datosRecopilados: any, infoCliente: ClassCliente, infoPedido: ClassInformacionPedido, infoFlowConfirma, chatGptConfirmaPedido, isDireccionRegistrada = false){
         // console.log('direccionElegida -- ', datosRecopilados);
         let direccionSelected = isDireccionRegistrada ? datosRecopilados.direccion : datosRecopilados
         let referenciaDireccionSelected = datosRecopilados.referencia
@@ -641,6 +650,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                 referenciaDireccionSelected = _direccion.referencia
                 direccionSelected = _direccion
 
+                // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
                 chatGptConfirmaPedido.setRowConversationLog(`cliente=mi direccion es: ${direccionSelected.direccion}.`)                
                 chatGptConfirmaPedido.setRowConversationLog(`cliente=la referencia de la direccion es: ${referenciaDireccionSelected}.`)                
             }            
@@ -660,13 +670,14 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
         // }
     }
 
-    async function verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente: ClassCliente, ctxFrom) {
+    async function verificarDatosFaltantesDelCliente(fallBack, flowDynamic, infoPedido, infoFlowConfirma, infoCliente: ClassCliente, ctxFrom, chatGptConfirmaPedido) {
         // console.log('datosRecopiladosDelCliente - ', datosRecopiladosDelCliente);
         const datosRecopiladosDelCliente = infoFlowConfirma.datosRecopiladosDelCliente
         const datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)
         console.log('datosFaltantes', datosFaltantes);
 
         if (datosFaltantes.length > 0) {
+            // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
             chatGptConfirmaPedido.setRowConversationLog(`asistente=escriba los siguientes datos: ${datosFaltantes.join(', ')}.`)
             return await fallBack(`Datos faltantes: ${datosFaltantes.join(', ')}.`)
         } else {
@@ -674,7 +685,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
             // antes de pasar debo verificar la direccion si es delivery
             if (infoPedido.getIsDelivery()) {
                 const _direccion = infoCliente.getDireccionSelected()
-                const _rptDireccion = await validarDireccion(_direccion, datosRecopiladosDelCliente, infoPedido)
+                const _rptDireccion = await validarDireccion(_direccion, datosRecopiladosDelCliente, infoPedido, chatGptConfirmaPedido)
                 if (_rptDireccion === 'ok') {
                     return await pasarFlowSegunCanalConsumo(fallBack, flowDynamic, infoCliente, infoPedido, infoFlowConfirma, ctxFrom)
                 } else {

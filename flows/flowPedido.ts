@@ -30,18 +30,6 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
     let _listCartasActivas = []
     let cartaEstablecimiento: any = []
 
-    // let showTomarPedido = false
-    // let chatHistory = PROMPTS.rolMozo;
-    // let listPedidoCliente = []
-    // let data_pedido: any = []
-    // let platosNoEcontrados: any = []
-    // let platosSinStock: any = []
-    // let platosEcontrados: any = [] } 
-    // let platosRecomendados: any = []
-    // let seccionesPlatosElegidos = []
-    // let isWaitResponse = false
-    // let isWaitConfirmar = false
-    // let intentosEntederPedido = 0
 
     // let infoPedido = new ClassInformacionPedido()
 
@@ -51,7 +39,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
     // const _flowConfirmaPedido = flowConfirmaPedido(data_pedido, classCliente, chatGpt)
     
     let infoSede: ClassInfoSede = _infoSede
-    let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
+    // let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
 
     return addKeyword(['1', '2', EVENTS.VOICE_NOTE])  
     .addAction(
@@ -60,10 +48,10 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             // showTomarPedido = false
             // intentosEntederPedido = 0
 
-            try {
-                chatGpt.clearConversationLog()                
-            } catch (error) {
-            }
+            // try {
+            //     chatGpt.clearConversationLog()                
+            // } catch (error) {
+            // }
                 
         }
     )  
@@ -82,8 +70,6 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             infoPedido = await database.getInfoPedido(ctx.from)
 
             let infoFlowPedido = infoPedido.getVariablesFlowPedido()
-
-            console.log('infoFlowPedido 86', infoFlowPedido);
 
             // if (!infoFlowPedido.isWaitResponse) {
             //     return;
@@ -135,9 +121,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
            
             
             // showTomarPedido = true
-            infoFlowPedido.showTomarPedido = true
-
-            console.log('infoFlowPedido change 140', infoFlowPedido);
+            infoFlowPedido.showTomarPedido = true            
 
             mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
 
@@ -162,9 +146,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                 //quitar comas                            
                 await sock.sendMessage(jid, { text: rowHorarios.join(',').replace(/,/g, '') })
                 
-                infoFlowPedido.isWaitResponse = false
-
-                console.log('guarda infoFlowPedido 162', infoFlowPedido);
+                infoFlowPedido.isWaitResponse = false                
 
                 infoPedido.setVariablesFlowPedido(infoFlowPedido)
                 database.update(ctx.from, infoPedido)
@@ -172,10 +154,11 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                 return endFlow(mensageTomarPedido)
                 // return flowDynamic(mensageTomarPedido)
             }
+            
+            // infoPedido.setVariablesFlowPedido(infoFlowPedido)
+            // database.update(ctx.from, infoPedido)
 
-            console.log('guarda infoFlowPedido 171', infoFlowPedido);
-            infoPedido.setVariablesFlowPedido(infoFlowPedido)
-            database.update(ctx.from, infoPedido)
+            guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
 
             // obtenemos la carta del establecimiento
             // cartaEstablecimiento = await getCartaEstablecimiento(infoSede.idsede)
@@ -187,8 +170,12 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             }
 
             // preparamos la ia con el prompt de mozo
-            chatGpt = new ChatGPT('mesero', 'cliente') 
-            chatGpt.sendPrompt(PROMPTS.rolMozo)                                                       
+            let chatGpt = new ChatGPT('mesero', 'cliente', infoPedido) 
+            chatGpt.sendPrompt(PROMPTS.rolMozo)
+
+            guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
+
+            console.log('infoPedido 182', infoPedido);
         }
     )
     .addAnswer(mensageTomarPedido,
@@ -200,8 +187,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             let infoPedido = new ClassInformacionPedido()
             infoPedido = await database.getInfoPedido(ctx.from)
             let infoFlowPedido = infoPedido.getVariablesFlowPedido()
-
-            console.log('infoFlowPedido 204', infoFlowPedido);
+            
             // if (!showTomarPedido) {
             if (!infoFlowPedido.showTomarPedido) {
                 // return endFlow()
@@ -230,11 +216,19 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                 if (isConfirmar) {
                     infoFlowPedido.isWaitConfirmar = false
                     infoFlowPedido.isWaitResponse = false
+                    guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
                     return await flowDynamic('Ok')
                 }
             }
             
             // enviamos la respuesta del usuario
+            // let chatGpt = new ChatGPT()
+            // const _chatGpt = infoPedido.getInstanceChatGpt()
+            // console.log('instanceChatGpt 222', _chatGpt);
+            // let chatGpt = _chatGpt
+            console.log('¿infoPedido', infoPedido);
+            console.log('infoPedido 225', infoPedido.getConversationLog());
+            let chatGpt = new ChatGPT('mesero', 'cliente', infoPedido) 
             let modelResponse = await chatGpt.sendMessage(userResponse)        
             
             // si interpreta que es un pedido
@@ -277,8 +271,11 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
             // console.log('opSelected', opSelected);
             if (opSelected === undefined) {
-                infoPedido.setVariablesFlowPedido(infoFlowPedido)
-                database.update(ctx.from, infoPedido)
+                
+                // infoPedido.setVariablesFlowPedido(infoFlowPedido)
+                // database.update(ctx.from, infoPedido)
+
+                guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
 
                 return await fallBack('No entendí su respuesta, repita por favor.');
             }
@@ -413,5 +410,11 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
         database.update(ctxFrom, infoPedido)
         return rpt
     }    
+
+    function guadarInfoDataBase(infoPedido: ClassInformacionPedido, infoFlowConfirma, ctxFrom) {
+        // guardamos en database
+        infoPedido.setVariablesFlowPedido(infoFlowConfirma)
+        database.update(ctxFrom, infoPedido)
+    }
 }    
 

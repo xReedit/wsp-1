@@ -2,6 +2,7 @@
 // import dotenv from 'dotenv';
 // dotenv.config();
 import endpoint from '../endpoints.config';
+import { ClassInformacionPedido } from './info.pedido.class';
 // import { ClassInformacionPedido } from './info.pedido.class';
 
 export class ChatGPT {
@@ -13,16 +14,20 @@ export class ChatGPT {
     private apiUrl: string;
     private rolResponde: string = 'mesero';
     private rolEnvia: string = 'usuario';
+    private infoPedido: ClassInformacionPedido;
 
-    constructor(rolResponde: string = 'mesero', rolEnvia: string = 'usuario') {        
-        this.conversationLog = [];
+    constructor(rolResponde: string = 'mesero', rolEnvia: string = 'usuario', infoPedido: ClassInformacionPedido) {        
         this.apiKey=endpoint.openai_api_key;
         this.apiUrl = 'https://api.openai.com/v1/chat/completions';
         this.rolResponde = rolResponde;
         this.rolEnvia = rolEnvia;
+        this.infoPedido = infoPedido;
+        this.conversationLog = this.infoPedido.getConversationLog();
 
-        this.clearConversationLog()
+        // this.clearConversationLog()
     }
+
+
 
     private async generateResponse(prompt: string, rol: string= 'user'): Promise<string> {
         console.log('pthis.apiKey', this.apiKey);
@@ -96,16 +101,22 @@ export class ChatGPT {
         const previousResponse = this.checkPreviousResponse(prompt);
         if (previousResponse) {            
             this.conversationLog.push(previousResponse);
+            this.infoPedido.setConversationLog(this.conversationLog);
+
             return previousResponse;
         }
 
         this.conversationLog.push(`${this.rolResponde}=${response}`);
+        this.infoPedido.setConversationLog(this.conversationLog);
+
         return response;
     }
 
     public async sendMessage(userInput: string): Promise<string> {
         console.log('userInput envio', userInput);
         this.conversationLog.push(`${this.rolEnvia}=${userInput}`);
+        this.infoPedido.setConversationLog(this.conversationLog);
+
         const response = await this.respond(userInput);
         // console.log('response responde', response);
         console.log('this.conversationLog', this.conversationLog);
@@ -115,6 +126,8 @@ export class ChatGPT {
     public async sendPrompt(prompt: string): Promise<string> {
         // console.log('prompt envio', prompt);
         this.conversationLog.push(prompt);
+        this.infoPedido.setConversationLog(this.conversationLog);
+
         const response = await this.respond(prompt, 'system');
         // console.log('response responde', response);
         return response;
@@ -122,6 +135,7 @@ export class ChatGPT {
 
     public setRowConversationLog(row: string): void {
         this.conversationLog.push(row);
+        this.infoPedido.setConversationLog(this.conversationLog);
     }
 
     public getConversationLog(): string[] {

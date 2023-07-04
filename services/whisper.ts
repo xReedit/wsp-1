@@ -2,6 +2,8 @@ const fs = require("fs");
 import { Configuration, OpenAIApi } from "openai";
 // import { config } from "../config";
 
+import endpoint from '../endpoints.config';
+
 // import dotenv from 'dotenv';
 // dotenv.config();
 
@@ -16,7 +18,7 @@ export const voiceToText = async (path) => {
 
     try {
         const configuration = new Configuration({
-            apiKey: process.env.OPENAI_API_KEY,
+            apiKey: endpoint.openai_api_key
         });
         const openai = new OpenAIApi(configuration);
         const resp = await openai.createTranscription(

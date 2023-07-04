@@ -47,6 +47,16 @@ export class ClassEstructuraPedido {
         return this.estructura.p_body;
     }
 
+    private upperItemDes() {
+        this.estructura.p_body.tipoconsumo.map((x) => {
+            x.secciones.map((y) => {
+                y.items.map((z) => {
+                    z.des = z.des.toUpperCase();
+                });
+            });
+        });
+    }
+
 
     // proceso de armado del pedido
     public armarPedido(infoSede: ClassInfoSede, infoPedido: ClassInformacionPedido, infoCliente: ClassCliente) {
@@ -70,9 +80,12 @@ export class ClassEstructuraPedido {
         // colocamos mayusculas al canal de consumo
         canalConsumoSeleted.descripcion = canalConsumoSeleted.descripcion.toUpperCase()
         
+        // mayusculas los items
+        this.upperItemDes()
 
         // subtotales
         // await classSubtotales.getRules(infoSede.idsede, infoSede.idorg)
+        console.log('infoSede.getListReglasCarta()', infoSede.getListReglasCarta());
         classSubtotales.setRules(infoSede.getListReglasCarta())         
         let arrSubtotales = classSubtotales.getSubtotales(canalConsumoSeleted.secciones, canalConsumoSeleted.idtipo_consumo, subtotalCostoEntrega)
         this.setSubtotal(arrSubtotales)
@@ -106,6 +119,7 @@ export class ClassEstructuraPedido {
             "reservar": _isReserva ? 1 : 0,
             "systemOS": "WhatsApp",
             "isCliente": 1,
+            "isFromBot": 1,
             "m_respaldo": "0",
             "num_pedido": "",
             "idcategoria": "17", //MODIFICARLO

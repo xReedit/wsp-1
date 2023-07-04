@@ -16,10 +16,11 @@ interface EstructuraInformacion {
         pedidoEnviar: any;
         direccionGeolocalizada: any;
         variables_flow_pedido: any;
-        variables_flow_confirmar_pedido: any;
+        variables_flow_confirmar_pedido: any;    
+        conversationLog: string[];
 }
 
-export class ClassInformacionPedido {
+export class ClassInformacionPedido {    
     private estructuraInfo: EstructuraInformacion;
 
     constructor() {
@@ -57,8 +58,17 @@ export class ClassInformacionPedido {
                     tipoPagoSeleted: {},
                     canalConsumoSeletedMasSeccion: {},
                     _listDirecciones: []
-                }
+                },
+                conversationLog: []
         };
+    }
+
+    public setConversationLog(conversationLog: string[]) {
+        this.estructuraInfo.conversationLog = conversationLog;
+    }
+
+    public getConversationLog(): string[] {
+        return this.estructuraInfo.conversationLog;
     }
 
     public setVariablesFlowConfirmarPedido(variablesFlowConfirmarPedido: any) {
@@ -250,7 +260,8 @@ export class ClassInformacionPedido {
                 tipoPagoSeleted: {},
                 canalConsumoSeletedMasSeccion: {},  
                 _listDirecciones: []                           
-            }
+            },
+            conversationLog: []
         };
     }
 
