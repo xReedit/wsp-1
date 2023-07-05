@@ -26,24 +26,21 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
 
     // indica si estamos atentos al pedido del cliente
     let url_img_carta = endpoint.url_img_carta
-    let mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
+    let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
     let _listCartasActivas = []
     let cartaEstablecimiento: any = []
 
 
     // let infoPedido = new ClassInformacionPedido()
 
-    // let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
-    // let chatGpt = new ChatGPT('mesero', 'cliente')    
     
     // const _flowConfirmaPedido = flowConfirmaPedido(data_pedido, classCliente, chatGpt)
     
     let infoSede: ClassInfoSede = _infoSede
-    // let chatGpt: ChatGPT // = new ChatGPT('mesero', 'cliente')    
-
+    
     return addKeyword(['1', '2', EVENTS.VOICE_NOTE])  
-    .addAction(
-        async () => {
+    //.addAction(
+      //  async () => {
             // reset de variables
             // showTomarPedido = false
             // intentosEntederPedido = 0
@@ -53,16 +50,17 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             // } catch (error) {
             // }
                 
-        }
-    )  
-    .addAnswer([
-        'Ya sabe que pedir? ó desea que le envie la carta?, escribe:',
-        '*1* 🗒️ para tomarte el pedido',
-        '*2* 🎴 para enviarte la carta'
-        ]                
-        , {
-            capture: true
-        },
+        //}
+    //)  
+    .addAction(
+        //[
+        //'Ya sabe que pedir? ó desea que le envie la carta?, escribe:',
+        //'*1* 🗒️ para tomarte el pedido',
+        //'*2* 🎴 para enviarte la carta'
+        //]
+        //, {
+          //  capture: true
+        //},
         async (ctx, { endFlow, flowDynamic, provider }) => {            
            
 
@@ -110,6 +108,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             
             isShowCarta = rptUser === '1' ? false : true
 
+        
             if (isShowCarta) {                
                 await sock.sendMessage(jid, { text: 'Un momento porfavor, le estoy adjuntando la carta ...🕑' })
             } else {                                
@@ -123,7 +122,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             // showTomarPedido = true
             infoFlowPedido.showTomarPedido = true            
 
-            mensageTomarPedido = 'Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
+            mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
 
             // no hay carta disponible
             if (!isCartaActiva) {                
@@ -171,11 +170,11 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
 
             // preparamos la ia con el prompt de mozo
             let chatGpt = new ChatGPT('mesero', 'cliente', infoPedido) 
-            chatGpt.sendPrompt(PROMPTS.rolMozo)
+            await chatGpt.sendPrompt(PROMPTS.rolMozo)
 
             guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
 
-            console.log('infoPedido 182', infoPedido);
+            //console.log('infoPedido 182', infoPedido);
         }
     )
     .addAnswer(mensageTomarPedido,
@@ -222,20 +221,20 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             }
             
             // enviamos la respuesta del usuario
-            // let chatGpt = new ChatGPT()
-            // const _chatGpt = infoPedido.getInstanceChatGpt()
-            // console.log('instanceChatGpt 222', _chatGpt);
             // let chatGpt = _chatGpt
-            console.log('¿infoPedido', infoPedido);
-            console.log('infoPedido 225', infoPedido.getConversationLog());
+            //console.log('¿infoPedido', infoPedido);
+           // console.log('infoPedido 225', infoPedido.getConversationLog());
             let chatGpt = new ChatGPT('mesero', 'cliente', infoPedido) 
             let modelResponse = await chatGpt.sendMessage(userResponse)        
             
+            //console.log("userResponse", userResponse)
+            //console.log('modelResponse', modelResponse);
             // si interpreta que es un pedido
             const isPedido = modelResponse.includes('pedido=')
 
             let rptReturn = modelResponse;
 
+            //console.log("isPedido", isPedido);
 
             if (isPedido) {
                 const _modelResponse = modelResponse.replace('pedido=', '').replace('¿Desea algo más?', '')                             
@@ -269,7 +268,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             ]
 
             const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
-            // console.log('opSelected', opSelected);
+            //console.log('opSelected', opSelected);
             if (opSelected === undefined) {
                 
                 // infoPedido.setVariablesFlowPedido(infoFlowPedido)

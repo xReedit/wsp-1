@@ -9,7 +9,6 @@ import { ClassEstructuraPedido } from "../clases/estructura.pedido.class";
 import { GeolocationServices } from "../services/geolocation.service";
 import { ClassInfoSede } from "../clases/sede";
 import { SqliteDatabase } from "../services/sqlite.services";
-import { info } from "console";
 
 
 // entra en accion cuando el cliente confirma el pedido
@@ -367,11 +366,11 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
             let infoFlowConfirma = infoPedido.getVariablesFlowConfirmarPedido()
             
             const _infoCliente = infoPedido.getCliente();
-            console.log('_infoCliente _infoCliente', _infoCliente);
+            //console.log('_infoCliente _infoCliente', _infoCliente);
             let infoCliente = new ClassCliente()
             infoCliente.setCliente(_infoCliente)  
-            console.log('infoCliente == 1', infoCliente )
-            console.log('infoCliente == iddireccion', infoCliente.getIdClientePwaDireccion());
+            //console.log('infoCliente == 1', infoCliente )
+            //console.log('infoCliente == iddireccion', infoCliente.getIdClientePwaDireccion());
 
             // let infoCliente: ClassCliente = infoPedido.getCliente();
 
@@ -574,7 +573,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
 
     async function validarDireccion(direccionOCoordenadasCliente: any, datosRecopiladosDelCliente, infoPedido: ClassInformacionPedido, chatGptConfirmaPedido) {
         const _confgDelivery = infoSede.getConfigDelivery()        
-        console.log('_confgDelivery', _confgDelivery);
+       // console.log('_confgDelivery', _confgDelivery);
         let direccionClienteSeletedCoordenadas: any = {}
         let msjReturn=''
 
@@ -674,7 +673,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
         // console.log('datosRecopiladosDelCliente - ', datosRecopiladosDelCliente);
         const datosRecopiladosDelCliente = infoFlowConfirma.datosRecopiladosDelCliente
         const datosFaltantes = obtenerClavesSinDatos(datosRecopiladosDelCliente)
-        console.log('datosFaltantes', datosFaltantes);
+        //console.log('datosFaltantes', datosFaltantes);
 
         if (datosFaltantes.length > 0) {
             // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()

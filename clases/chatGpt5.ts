@@ -30,7 +30,6 @@ export class ChatGPT {
 
 
     private async generateResponse(prompt: string, rol: string= 'user'): Promise<string> {
-        console.log('pthis.apiKey', this.apiKey);
         try {
             const messages = [{ role: rol, content: prompt }];
             const response = await fetch(this.apiUrl, {
@@ -50,7 +49,7 @@ export class ChatGPT {
             });
 
             const data = await response.json();
-            console.log('data ==== api', data);
+            //console.log('data ==== api', data);
             let rptModel = data.choices[0].message.content.trim(); 
             rptModel = rptModel.replace(this.rolResponde+'=', '');
             return rptModel;
@@ -85,9 +84,9 @@ export class ChatGPT {
     private async respond(message: string, rol: string = 'user'): Promise<string> {
         // this.conversationLog.push(message);
 
-        // console.log('conversationLog', this.conversationLog);
+        //// console.log('conversationLog', this.conversationLog);
         const prompt = this.conversationLog.join('\n');
-        console.log('prompt', prompt);
+        //console.log('prompt', prompt);
         // let response = await this.generateResponse(prompt, rol);
         let response = await this.sendMessageChatGpt(prompt, rol);
 
@@ -113,13 +112,13 @@ export class ChatGPT {
     }
 
     public async sendMessage(userInput: string): Promise<string> {
-        console.log('userInput envio', userInput);
+        //console.log('userInput envio', userInput);
         this.conversationLog.push(`${this.rolEnvia}=${userInput}`);
         this.infoPedido.setConversationLog(this.conversationLog);
 
         const response = await this.respond(userInput);
         // console.log('response responde', response);
-        console.log('this.conversationLog', this.conversationLog);
+        //console.log('this.conversationLog', this.conversationLog);
         return response;
     }
 
@@ -129,6 +128,8 @@ export class ChatGPT {
         this.infoPedido.setConversationLog(this.conversationLog);
 
         const response = await this.respond(prompt, 'system');
+        //this.conversationLog.push(`${this.rolResponde}=${response}`);
+        //this.infoPedido.setConversationLog(this.conversationLog);
         // console.log('response responde', response);
         return response;
     }

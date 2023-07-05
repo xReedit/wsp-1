@@ -29,7 +29,7 @@ export const flowPrincipal = (infoSede: ClassInfoSede, database: SqliteDatabase)
 
             // buscamos al cliente por el numero de telefono
             const _num_telefono = ctx.from                                        
-            console.log('_num_telefono', _num_telefono);            
+            //console.log('_num_telefono', _num_telefono);
             infoCliente = await getClienteByCelular(_num_telefono, infoCliente)                                    
             infoPedido.setCliente(infoCliente)
             
