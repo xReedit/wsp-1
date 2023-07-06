@@ -1,23 +1,7 @@
 [
   {
-    "ref": "45308a69-e547-4998-b0aa-73d5dce4f417",
-    "keyword": "bef62eaf76422c22ed0c01b71f79b715",
-    "answer": "hola",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "79e7fc16f7fb85373fd25a99390f44c0"
-  },
-  {
-    "ref": "6e2d4558-33e4-46ad-a539-395c5590e841",
-    "keyword": "79e7fc16f7fb85373fd25a99390f44c0",
-    "answer": "hola",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "79e7fc16f7fb85373fd25a99390f44c0"
-  },
-  {
-    "ref": "ans_50d928d1-b32c-4cca-86ca-962cc44aeb76",
-    "keyword": "key_ef33a1a8-8da8-4229-8f64-751ae9918778",
+    "ref": "ans_b6674da1-f0f3-4d6b-a0fc-ac4f1ef0b5cd",
+    "keyword": "key_ecc0da7f-d54d-45c7-921f-6caf74f3dee1",
     "answer": "🤖 Hola, soy Piter su asistente virtual.",
     "options": {
       "media": null,
@@ -29,11 +13,11 @@
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "88102bb5d6f1e87acf991124020aeb3d",
+    "refSerialize": "1e7ca13e25d8220fda4b756d59ff2e34",
     "from": "51934746830"
   },
   {
-    "ref": "a9002f2c-5f64-444c-adab-498013063f69",
+    "ref": "5ad042d2-e23e-4779-aa60-54ab9fafa364",
     "answer": "👋 Hola *Carlos*, que bueno saludarte nuevamente",
     "options": {
       "media": null,
@@ -44,8 +28,8 @@
     "refSerialize": "b5427f3fabc9975a1c523246d24db400"
   },
   {
-    "ref": "ans_312627cd-b0de-4f64-aefc-25928349bb2d",
-    "keyword": "ans_6f7bff7e-2238-4d91-a515-a46eddfe9470",
+    "ref": "ans_7f6a3e5a-f4c6-48a7-b865-8d4d85c85552",
+    "keyword": "ans_1b1fc803-4a4a-4cda-b5a0-7c85a8c5fd5a",
     "answer": "👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n*3*  📃 para reenviarte un comprobante",
     "options": {
       "media": null,
@@ -55,21 +39,21 @@
       "delay": 0,
       "nested": [
         {
-          "ref": "key_6386da25-e546-47f2-a2c0-9fcff49d2fdb",
+          "ref": "key_35a942b6-c386-4a89-9e80-ee0d66a51a72",
           "keyword": [
             "1",
             "2",
-            "_event_voice_note__043c35ce-e908-42f2-bacb-186bb7c8c59e"
+            "_event_voice_note__114f56e2-fa12-40c1-93e7-2410861f178f"
           ],
           "options": {
             "sensitive": false,
             "regex": false
           },
-          "refSerialize": "88e84124d3cb33229f4e31408b4681ec"
+          "refSerialize": "6e736248256870127ed8719b115c16bf"
         },
         {
-          "ref": "ans_f86311f2-f72b-4c6b-9262-4bb85643d21b",
-          "keyword": "key_6386da25-e546-47f2-a2c0-9fcff49d2fdb",
+          "ref": "ans_57c74054-49bb-4bc7-a78e-274b18f623ab",
+          "keyword": "key_35a942b6-c386-4a89-9e80-ee0d66a51a72",
           "answer": "__call_action__",
           "options": {
             "media": null,
@@ -81,12 +65,12 @@
             "keyword": {},
             "callback": true
           },
-          "refSerialize": "b4599c5d12f1cc2a531eec66acf8ea05"
+          "refSerialize": "3bc3392ad9acf68e3a716ff87aa51cda"
         },
         {
-          "ref": "ans_8c8fd76f-d5b4-4226-9aae-447f7faadb8e",
-          "keyword": "ans_f86311f2-f72b-4c6b-9262-4bb85643d21b",
-          "answer": "Dime tu pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*",
+          "ref": "ans_1d34aab7-7e66-4aab-9c79-5981985a9c17",
+          "keyword": "ans_57c74054-49bb-4bc7-a78e-274b18f623ab",
+          "answer": "Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*",
           "options": {
             "media": null,
             "buttons": [],
@@ -97,10 +81,10 @@
             "keyword": {},
             "callback": true
           },
-          "refSerialize": "f1965edff2428da568ecbf0220b0287e"
+          "refSerialize": "58c2a08946eeacbc3cdcb4a1cccb1141"
         },
         {
-          "ref": "key_3b0e652b-e6b7-47f4-bf5c-99d11a8409e2",
+          "ref": "key_4b094c2b-dd95-4135-a960-82d3873fe41c",
           "keyword": [
             "3",
             "comprobante",
@@ -113,8 +97,8 @@
           "refSerialize": "d2a37336590bf6711925d5649e5efd9f"
         },
         {
-          "ref": "ans_9d8543c0-662a-4c05-b668-58608e828752",
-          "keyword": "key_3b0e652b-e6b7-47f4-bf5c-99d11a8409e2",
+          "ref": "ans_49ccd7d1-49be-4054-bf64-45abeb8c4466",
+          "keyword": "key_4b094c2b-dd95-4135-a960-82d3873fe41c",
           "answer": "📃 Para poder encontrar el comprobante:\nPor favor digame el *ruc* o *dni* del cliente -a quien fue emitido-",
           "options": {
             "media": null,
@@ -126,38 +110,13 @@
             "keyword": {},
             "callback": true
           },
-          "refSerialize": "5ba473a1a57f2630992c3135c1277d5a"
+          "refSerialize": "bad895bae0f124412693eff3fb7891b3"
         }
       ],
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "18753d1aa5addc99a852f61d8f77e91a",
-    "from": "51934746830"
-  },
-  {
-    "ref": "b1d303f9-954e-4eda-8303-5ee31e6da587",
-    "keyword": "18753d1aa5addc99a852f61d8f77e91a",
-    "answer": "3",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
-  },
-  {
-    "ref": "ans_9d8543c0-662a-4c05-b668-58608e828752",
-    "keyword": "key_3b0e652b-e6b7-47f4-bf5c-99d11a8409e2",
-    "answer": "📃 Para poder encontrar el comprobante:\nPor favor digame el *ruc* o *dni* del cliente -a quien fue emitido-",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "5ba473a1a57f2630992c3135c1277d5a",
+    "refSerialize": "4acd8f0bfc39ecf8657654a772bda070",
     "from": "51934746830"
   }
 ]

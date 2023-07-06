@@ -2,10 +2,10 @@
   key: {
     remoteJid: '51934746830@s.whatsapp.net',
     fromMe: false,
-    id: '3EB02F777F24ACF9117791',
+    id: '3EB0E317395269014C3FF0',
     participant: undefined
   },
-  messageTimestamp: 1688570529,
+  messageTimestamp: 1688618912,
   pushName: 'Papaya Express',
   broadcast: false,
   message: Message {
@@ -19,54 +19,7 @@
       deviceListMetadataVersion: 2
     }
   },
+  verifiedBizName: 'Papaya Express',
   body: 'hola',
-  from: '51934746830'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '51934746830@s.whatsapp.net',
-    fromMe: false,
-    id: '3EB09EB84B06C487FB0573',
-    participant: undefined
-  },
-  messageTimestamp: 1688570543,
-  pushName: 'Papaya Express',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage {
-      text: 'hola',
-      contextInfo: [ContextInfo],
-      inviteLinkGroupTypeV2: 0
-    },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: 'hola',
-  from: '51934746830'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '51934746830@s.whatsapp.net',
-    fromMe: false,
-    id: '3EB0F74A01555289EE62FA',
-    participant: undefined
-  },
-  messageTimestamp: 1688570548,
-  pushName: 'Papaya Express',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage {
-      text: '3',
-      contextInfo: [ContextInfo],
-      inviteLinkGroupTypeV2: 0
-    },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '3',
   from: '51934746830'
 }
